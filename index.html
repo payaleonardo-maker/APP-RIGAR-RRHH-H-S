@@ -7,1287 +7,814 @@
 <meta name="theme-color" content="#0D0D0D"/>
 <title>RIGAR · Dashboard RRHH</title>
 <style>
-:root{
-  --rojo:#CC0000;--rojo2:#FF2222;--bg:#0D0D0D;--card:#161616;
-  --borde:#2A2A2A;--txt:#F0F0F0;--sec:#888;
-  --verde:#22C55E;--amarillo:#F59E0B;--azul:#3B82F6;--violeta:#8B5CF6;
-}
+:root{--rojo:#CC0000;--rojo2:#FF2222;--bg:#0D0D0D;--card:#161616;--borde:#2A2A2A;--txt:#F0F0F0;--sec:#888;--verde:#22C55E;--amarillo:#F59E0B;--azul:#3B82F6;--violeta:#8B5CF6}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:30px}
 ::-webkit-scrollbar{display:none}
 button{font-family:inherit}
-
 .header{background:var(--card);border-bottom:2px solid var(--rojo);padding:12px 16px;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center}
-.header-left .eyebrow{font-size:10px;color:var(--rojo);font-weight:700;letter-spacing:3px;text-transform:uppercase}
-.header-left h1{font-size:18px;font-weight:800;letter-spacing:-0.5px}
+.eyebrow{font-size:10px;color:var(--rojo);font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.header h1{font-size:18px;font-weight:800}
 .header-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
 .periodo{font-size:10px;color:var(--sec)}
 .badge{font-size:9px;font-weight:700;border-radius:4px;padding:2px 6px;display:inline-block}
-.badge-live{background:var(--verde);color:#000}
-.badge-cache{background:var(--amarillo);color:#000}
-.refresh-btn{background:none;border:1px solid var(--borde);border-radius:6px;color:var(--sec);font-size:10px;padding:3px 8px;cursor:pointer;margin-top:2px}
-.refresh-btn:active{background:var(--borde)}
-
+.blive{background:var(--verde);color:#000}
+.bpart{background:var(--amarillo);color:#000}
+.refresh-btn{background:none;border:1px solid var(--borde);border-radius:6px;color:var(--sec);font-size:10px;padding:3px 8px;cursor:pointer}
 .tabs{display:flex;overflow-x:auto;background:var(--card);border-bottom:1px solid var(--borde);scrollbar-width:none}
-.tab{flex:none;border:none;background:none;cursor:pointer;padding:9px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;border-bottom:2px solid transparent;color:var(--sec);transition:color .15s;min-width:62px}
-.tab.active{border-bottom-color:var(--rojo);color:var(--rojo)}
-.tab-icon{font-size:15px}
-.tab-label{font-size:9px;font-weight:400;white-space:nowrap}
-.tab.active .tab-label{font-weight:700}
-
+.tab{flex:none;border:none;background:none;cursor:pointer;padding:9px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;border-bottom:2px solid transparent;color:var(--sec);min-width:60px}
+.tab.active{border-bottom-color:var(--rojo);color:var(--rojo);font-weight:700}
+.ti{font-size:15px}
+.tl{font-size:9px;white-space:nowrap}
 .content{padding:12px 14px}
 .section{display:none}
 .section.active{display:block}
-
-/* LOADING */
-.loading-overlay{position:fixed;inset:0;background:#0D0D0Dee;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
-.loading-overlay.hidden{display:none}
-.spinner{width:40px;height:40px;border:3px solid var(--borde);border-top-color:var(--rojo);border-radius:50%;animation:spin 0.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-size:13px;color:var(--sec)}
-.loading-step{font-size:11px;color:var(--rojo);margin-top:4px}
-
+.lov{position:fixed;inset:0;background:#0D0D0Dee;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
+.lov.hidden{display:none}
+.spin{width:40px;height:40px;border:3px solid var(--borde);border-top-color:var(--rojo);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.lst{font-size:11px;color:var(--rojo);margin-top:4px}
 .card{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:16px;margin-bottom:12px}
-.card-sm{padding:12px 14px}
-.kpi-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.csm{padding:12px 14px}
+.kr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .kpi{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:12px 8px;text-align:center;flex:1;min-width:75px}
-.kpi-val{font-size:22px;font-weight:800;font-family:monospace;line-height:1}
-.kpi-label{font-size:10px;color:var(--sec);margin-top:3px;text-transform:uppercase;letter-spacing:1px}
-.kpi-sub{font-size:10px;color:var(--sec);margin-top:1px}
-.stitle{font-size:10px;font-weight:700;color:var(--rojo);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;margin-top:4px}
-
+.kv{font-size:22px;font-weight:800;font-family:monospace;line-height:1}
+.kl{font-size:10px;color:var(--sec);margin-top:3px;text-transform:uppercase;letter-spacing:1px}
+.ks{font-size:10px;color:var(--sec);margin-top:1px}
+.st{font-size:10px;font-weight:700;color:var(--rojo);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;margin-top:4px}
 .hero{border-radius:14px;padding:18px 16px;margin-bottom:12px}
-.hero-fact{background:linear-gradient(135deg,#1a0000,#2a0000);border:1px solid #CC000040}
-.hero-liga{background:#0a1a00;border:1px solid #22C55E40}
-.hero-costos{background:linear-gradient(135deg,#001a00,#002a00);border:1px solid #22C55E40}
-.hero-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
-.hero-num{font-size:36px;font-weight:900;font-family:monospace;line-height:1;margin-bottom:10px}
-.hero-grid{display:flex;gap:6px}
-.hero-cell{flex:1;background:#ffffff0a;border-radius:8px;padding:8px}
-.hero-cell-val{font-size:14px;font-weight:800;font-family:monospace}
-.hero-cell-lbl{font-size:9px;color:var(--sec);margin-top:2px}
-
-.bar-track{background:var(--borde);border-radius:4px;height:8px;margin-bottom:4px}
-.bar-fill{border-radius:4px;height:100%;transition:width .6s ease}
-
-.row-list-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--borde)}
-.row-list-item:last-child{border-bottom:none}
-.medal{width:22px;text-align:center;font-size:15px}
-.emp-bars{display:flex;gap:6px}
-.emp-bar{border-radius:4px;padding:4px 8px;font-size:11px;font-weight:600}
-.det-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:4px;font-size:12px;padding:5px 0;border-bottom:1px solid var(--borde)}
-.det-grid:last-child{border-bottom:none}
-.det-head{font-size:10px;color:var(--sec);font-weight:700;text-transform:uppercase}
-.case-card{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:12px 14px;margin-bottom:8px}
-.badge-activo{display:inline-block;background:#3B0000;color:var(--rojo);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;margin-top:8px}
-.alert{border-radius:10px;padding:12px 14px;margin-top:8px}
-.alert-warn{background:#1A1200;border:1px solid #F59E0B30}
-.alert-danger{background:#1A0000;border:1px solid #CC000030}
-.alert-title{font-size:11px;font-weight:700;margin-bottom:4px}
-.alert-body{font-size:12px;color:var(--sec);line-height:1.7}
-.impacto-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--borde)}
-.impacto-total{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--borde)}
-.sac-note{font-size:10px;color:var(--amarillo);text-align:center;margin-top:6px}
-
-/* Data source indicator */
-.source-tag{font-size:9px;padding:2px 6px;border-radius:4px;display:inline-block;margin-bottom:8px}
-.source-live{background:#22C55E20;color:var(--verde);border:1px solid #22C55E40}
-.source-static{background:#F59E0B20;color:var(--amarillo);border:1px solid #F59E0B40}
+.hf{background:linear-gradient(135deg,#1a0000,#2a0000);border:1px solid #CC000040}
+.hl{background:#0a1a00;border:1px solid #22C55E40}
+.hc{background:linear-gradient(135deg,#001a00,#002a00);border:1px solid #22C55E40}
+.he{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+.hn{font-size:36px;font-weight:900;font-family:monospace;line-height:1;margin-bottom:10px}
+.hg{display:flex;gap:6px}
+.hcl{flex:1;background:#ffffff0a;border-radius:8px;padding:8px}
+.hcv{font-size:14px;font-weight:800;font-family:monospace}
+.hcl2{font-size:9px;color:var(--sec);margin-top:2px}
+.bt{background:var(--borde);border-radius:4px;height:8px;margin-bottom:4px}
+.bf{border-radius:4px;height:100%;transition:width .6s ease}
+.rli{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--borde)}
+.rli:last-child{border-bottom:none}
+.med{width:22px;text-align:center;font-size:15px}
+.eb{display:flex;gap:6px}
+.ebar{border-radius:4px;padding:4px 8px;font-size:11px;font-weight:600}
+.dg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:4px;font-size:12px;padding:5px 0;border-bottom:1px solid var(--borde)}
+.dg:last-child{border-bottom:none}
+.dh{font-size:10px;color:var(--sec);font-weight:700;text-transform:uppercase}
+.cc{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.ba{display:inline-block;background:#3B0000;color:var(--rojo);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;margin-top:8px}
+.alw{background:#1A1200;border:1px solid #F59E0B30;border-radius:10px;padding:12px 14px;margin-top:8px}
+.ald{background:#1A0000;border:1px solid #CC000030;border-radius:10px;padding:12px 14px}
+.alt{font-size:11px;font-weight:700;margin-bottom:4px}
+.alb{font-size:12px;color:var(--sec);line-height:1.7}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--borde)}
+.it{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--borde)}
+.src{font-size:9px;padding:2px 6px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.slv{background:#22C55E20;color:var(--verde);border:1px solid #22C55E40}
+.sst{background:#F59E0B20;color:var(--amarillo);border:1px solid #F59E0B40}
 </style>
 </head>
 <body>
+<div class="lov" id="lov"><div class="spin"></div><div><div style="font-size:13px;color:#888">Cargando dashboard RIGAR...</div><div class="lst" id="lst">Conectando con Google Sheets</div></div></div>
 
-<!-- LOADING -->
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="spinner"></div>
-  <div>
-    <div class="loading-text">Cargando dashboard RIGAR...</div>
-    <div class="loading-step" id="loadingStep">Conectando con Google Sheets</div>
-  </div>
-</div>
-
-<!-- HEADER -->
 <div class="header">
-  <div class="header-left">
-    <div class="eyebrow">GRUPO RIGAR</div>
-    <h1>Dashboard RRHH</h1>
-  </div>
+  <div><div class="eyebrow">GRUPO RIGAR</div><h1>Dashboard RRHH</h1></div>
   <div class="header-right">
-    <div class="periodo" id="periodoLabel">2026</div>
-    <span class="badge badge-live" id="statusBadge">● EN VIVO</span>
-    <button class="refresh-btn" onclick="loadAllData()">↻ Actualizar</button>
+    <div class="periodo" id="per">2026</div>
+    <span class="badge blive" id="sbadge">● EN VIVO</span>
+    <button class="refresh-btn" onclick="init()">↻ Actualizar</button>
   </div>
 </div>
 
-<!-- TABS -->
 <div class="tabs">
-  <button class="tab active" onclick="showTab('resumen',this)"><span class="tab-icon">⚡</span><span class="tab-label">Resumen</span></button>
-  <button class="tab" onclick="showTab('facturacion',this)"><span class="tab-icon">💰</span><span class="tab-label">Facturación</span></button>
-  <button class="tab" onclick="showTab('nomina',this)"><span class="tab-icon">👥</span><span class="tab-label">Nómina</span></button>
-  <button class="tab" onclick="showTab('ausentismo',this)"><span class="tab-icon">📋</span><span class="tab-label">Ausentismo</span></button>
-  <button class="tab" onclick="showTab('art',this)"><span class="tab-icon">🛡️</span><span class="tab-label">ART</span></button>
-  <button class="tab" onclick="showTab('liga',this)"><span class="tab-icon">🏆</span><span class="tab-label">Liga</span></button>
-  <button class="tab" onclick="showTab('rotacion',this)"><span class="tab-icon">🔄</span><span class="tab-label">Rotación</span></button>
-  <button class="tab" onclick="showTab('vacaciones',this)"><span class="tab-icon">🏖️</span><span class="tab-label">Vacaciones</span></button>
-  <button class="tab" onclick="showTab('costos',this)"><span class="tab-icon">💼</span><span class="tab-label">Costos F931</span></button>
-  <button class="tab" onclick="showTab('hs',this)"><span class="tab-icon">⚙️</span><span class="tab-label">H&amp;S</span></button>
+  <button class="tab active" onclick="go('resumen',this)"><span class="ti">⚡</span><span class="tl">Resumen</span></button>
+  <button class="tab" onclick="go('facturacion',this)"><span class="ti">💰</span><span class="tl">Facturación</span></button>
+  <button class="tab" onclick="go('nomina',this)"><span class="ti">👥</span><span class="tl">Nómina</span></button>
+  <button class="tab" onclick="go('ausentismo',this)"><span class="ti">📋</span><span class="tl">Ausentismo</span></button>
+  <button class="tab" onclick="go('art',this)"><span class="ti">🛡️</span><span class="tl">ART</span></button>
+  <button class="tab" onclick="go('liga',this)"><span class="ti">🏆</span><span class="tl">Liga</span></button>
+  <button class="tab" onclick="go('rotacion',this)"><span class="ti">🔄</span><span class="tl">Rotación</span></button>
+  <button class="tab" onclick="go('vacaciones',this)"><span class="ti">🏖️</span><span class="tl">Vacaciones</span></button>
+  <button class="tab" onclick="go('costos',this)"><span class="ti">💼</span><span class="tl">Costos</span></button>
+  <button class="tab" onclick="go('hs',this)"><span class="ti">⚙️</span><span class="tl">H&amp;S</span></button>
 </div>
 
 <div class="content">
 
-<!-- ═══ RESUMEN ════════════════════════════════ -->
+<!-- RESUMEN -->
 <div id="tab-resumen" class="section active">
-  <div class="hero hero-fact">
-    <div class="hero-eyebrow" style="color:var(--rojo)">💰 Facturación perdida — Ene–May 2026</div>
-    <div class="hero-num" style="color:var(--rojo)">$743.1M</div>
-    <div class="hero-grid">
-      <div class="hero-cell"><div class="hero-cell-val">5.24%</div><div class="hero-cell-lbl">% pérdida prom.</div></div>
-      <div class="hero-cell"><div class="hero-cell-val">$13.5B</div><div class="hero-cell-lbl">total facturado</div></div>
-      <div class="hero-cell"><div class="hero-cell-val" style="color:var(--amarillo)">May 6.1%</div><div class="hero-cell-lbl">peor mes</div></div>
+  <div class="hero hf">
+    <div class="he" style="color:var(--rojo)">💰 Facturación perdida — Ene–May 2026</div>
+    <div class="hn" style="color:var(--rojo)">$743.1M</div>
+    <div class="hg">
+      <div class="hcl"><div class="hcv">5.24%</div><div class="hcl2">% pérdida prom.</div></div>
+      <div class="hcl"><div class="hcv">$13.5B</div><div class="hcl2">total facturado</div></div>
+      <div class="hcl"><div class="hcv" style="color:var(--amarillo)">May 6.1%</div><div class="hcl2">peor mes</div></div>
     </div>
   </div>
-  <div class="hero hero-liga">
-    <div class="hero-eyebrow" style="color:var(--verde)">🏆 Liga de Choferes — Ene–May 2026</div>
+  <div class="hero hl">
+    <div class="he" style="color:var(--verde)">🏆 Liga de Choferes — Ene–Jun 2026</div>
     <div style="display:flex;align-items:center;gap:16px">
-      <div>
-        <div class="hero-num" style="color:var(--amarillo)">58.7</div>
-        <div style="font-size:10px;color:var(--sec)">promedio · obj. 70 pts</div>
-      </div>
-      <div style="flex:1">
-        <svg viewBox="0 0 200 55" style="width:100%;display:block">
-          <line x1="0" y1="10" x2="200" y2="10" stroke="#22C55E" stroke-width="1" stroke-dasharray="4,2"/>
-          <rect x="5"  y="16" width="28" height="30" fill="#CC0000" rx="3"/>
-          <rect x="45" y="7"  width="28" height="39" fill="#22C55E" rx="3"/>
-          <rect x="85" y="17" width="28" height="29" fill="#CC0000" rx="3"/>
-          <rect x="125" y="20" width="28" height="26" fill="#CC0000" rx="3"/>
-          <rect x="165" y="14" width="28" height="32" fill="#CC0000" rx="3"/>
-          <text x="19"  y="53" fill="#888" font-size="7" text-anchor="middle">Ene</text>
-          <text x="59"  y="53" fill="#888" font-size="7" text-anchor="middle">Feb</text>
-          <text x="99"  y="53" fill="#888" font-size="7" text-anchor="middle">Mar</text>
-          <text x="139" y="53" fill="#888" font-size="7" text-anchor="middle">Abr</text>
-          <text x="179" y="53" fill="#888" font-size="7" text-anchor="middle">May</text>
-        </svg>
-      </div>
+      <div><div class="hn" style="color:var(--amarillo)" id="r-liga">58.7</div><div style="font-size:10px;color:var(--sec)">promedio · obj. 70 pts</div></div>
+      <div style="flex:1"><svg viewBox="0 0 200 55" style="width:100%;display:block" id="r-liga-svg">
+        <line x1="0" y1="10" x2="200" y2="10" stroke="#22C55E" stroke-width="1" stroke-dasharray="4,2"/>
+        <rect x="5" y="16" width="28" height="30" fill="#CC0000" rx="3"/>
+        <rect x="45" y="7" width="28" height="39" fill="#22C55E" rx="3"/>
+        <rect x="85" y="17" width="28" height="29" fill="#CC0000" rx="3"/>
+        <rect x="125" y="20" width="28" height="26" fill="#CC0000" rx="3"/>
+        <rect x="165" y="14" width="28" height="32" fill="#CC0000" rx="3"/>
+        <text x="19" y="53" fill="#888" font-size="7" text-anchor="middle">Ene</text>
+        <text x="59" y="53" fill="#888" font-size="7" text-anchor="middle">Feb</text>
+        <text x="99" y="53" fill="#888" font-size="7" text-anchor="middle">Mar</text>
+        <text x="139" y="53" fill="#888" font-size="7" text-anchor="middle">Abr</text>
+        <text x="179" y="53" fill="#888" font-size="7" text-anchor="middle">May</text>
+      </svg></div>
     </div>
   </div>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--txt)" id="r-activos">206</div><div class="kpi-label">Activos</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)" id="r-diasAus">—</div><div class="kpi-label">Días perdidos</div><div class="kpi-sub">sin ART</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)" id="r-artTotal">—</div><div class="kpi-label">Días ART</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--sec)">10</div><div class="kpi-label">Bajas</div></div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--txt)" id="r-act">206</div><div class="kl">Activos</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)" id="r-aus">790</div><div class="kl">Días aus.</div><div class="ks">sin ART</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)" id="r-art">615</div><div class="kl">Días ART</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--sec)">10</div><div class="kl">Bajas</div></div>
   </div>
-  <div class="stitle">Ausentismo — días perdidos por mes</div>
-  <div class="card">
-    <span class="source-tag source-live" id="aus-source-tag">● Google Sheets</span>
-    <svg viewBox="0 0 320 130" style="width:100%;display:block" id="aus-chart-resumen">
-      <text x="160" y="65" fill="#888" font-size="11" text-anchor="middle">Cargando...</text>
-    </svg>
-  </div>
-  <div class="hero hero-costos" style="padding:14px 16px">
-    <div class="hero-eyebrow" style="color:var(--verde)">💼 Costo del ausentismo — Ene–Jun 2026</div>
+  <div class="st">Ausentismo — días perdidos por mes</div>
+  <div class="card"><svg viewBox="0 0 320 130" style="width:100%;display:block" id="aus-svg-r"></svg></div>
+  <div class="hero hc" style="padding:14px 16px">
+    <div class="he" style="color:var(--verde)">💼 Costo del ausentismo — Ene–Jun 2026</div>
     <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px">
-      <div style="font-size:32px;font-weight:900;color:var(--rojo);font-family:monospace" id="r-costoAus">$120.5M</div>
-      <div style="font-size:12px;color:var(--sec)">3.2% del costo laboral</div>
+      <div style="font-size:32px;font-weight:900;color:var(--rojo);font-family:monospace" id="r-caus">—</div>
+      <div style="font-size:12px;color:var(--sec)" id="r-cpct">del costo laboral</div>
     </div>
-    <div class="hero-grid">
-      <div class="hero-cell"><div class="hero-cell-val" style="color:var(--amarillo)" id="r-costoSinART">$82.5M</div><div class="hero-cell-lbl">Carp. médica</div></div>
-      <div class="hero-cell"><div class="hero-cell-val" style="color:var(--rojo)" id="r-costoART">$38.0M</div><div class="hero-cell-lbl">ART</div></div>
-      <div class="hero-cell"><div class="hero-cell-val">$137K</div><div class="hero-cell-lbl">costo/día/emp</div></div>
+    <div class="hg">
+      <div class="hcl"><div class="hcv" style="color:var(--amarillo)" id="r-csinart">—</div><div class="hcl2">Carp+Aus</div></div>
+      <div class="hcl"><div class="hcv" style="color:var(--rojo)" id="r-cart">—</div><div class="hcl2">ART</div></div>
+      <div class="hcl"><div class="hcv" id="r-cdia">—</div><div class="hcl2">costo/día/emp</div></div>
     </div>
   </div>
 </div>
 
-<!-- ═══ FACTURACIÓN ════════════════════════════ -->
+<!-- FACTURACIÓN -->
 <div id="tab-facturacion" class="section">
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)">$743.1M</div><div class="kpi-label">Total perdido</div><div class="kpi-sub">Ene–May</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)">$13.5B</div><div class="kpi-label">Facturado</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)">5.24%</div><div class="kpi-label">% pérdida</div></div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">$743.1M</div><div class="kl">Total perdido</div><div class="ks">Ene–May</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">$13.5B</div><div class="kl">Facturado</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">5.24%</div><div class="kl">% pérdida</div></div>
   </div>
-  <div class="stitle">Detalle mensual</div>
+  <div class="st">Detalle mensual</div>
   <div id="fact-list"></div>
   <div class="card" style="background:#0a1500;border-color:#22C55E30">
     <div style="font-size:11px;color:var(--verde);font-weight:700;margin-bottom:6px">💡 ¿Cómo se calcula?</div>
-    <div style="font-size:12px;color:var(--sec);line-height:1.7"><strong style="color:var(--txt)">Días perdidos × facturación diaria por chofer.</strong> Cada ausencia = servicio no prestado. Fact. prom. por día: <strong style="color:var(--txt)">$890.261</strong></div>
+    <div style="font-size:12px;color:var(--sec);line-height:1.7"><strong style="color:var(--txt)">Días perdidos × facturación diaria por chofer.</strong> Fact. prom. por día: <strong style="color:var(--txt)">$890.261</strong></div>
   </div>
 </div>
 
-<!-- ═══ NÓMINA ══════════════════════════════════ -->
+<!-- NÓMINA -->
 <div id="tab-nomina" class="section">
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--txt)">206</div><div class="kpi-label">Total activos</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)">129</div><div class="kpi-label">Choferes</div><div class="kpi-sub">62.6%</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--azul)">77</div><div class="kpi-label">No choferes</div><div class="kpi-sub">37.4%</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)">10</div><div class="kpi-label">Bajas 2026</div></div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--txt)" id="n-tot">206</div><div class="kl">Total activos</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)" id="n-ch">129</div><div class="kl">Choferes</div><div class="ks" id="n-chp">62.6%</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--azul)" id="n-ot">77</div><div class="kl">No choferes</div><div class="ks" id="n-otp">37.4%</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">10</div><div class="kl">Bajas 2026</div></div>
   </div>
-  <span class="source-tag source-live" id="nom-source-tag">● Google Sheets</span>
-  <div class="stitle">Por empresa</div>
-  <div id="nomina-empresas"></div>
+  <span class="src slv" id="n-src">● Google Sheets</span>
+  <div class="st">Por empresa</div>
+  <div id="nom-list"></div>
 </div>
 
-<!-- ═══ AUSENTISMO ══════════════════════════════ -->
+<!-- AUSENTISMO -->
 <div id="tab-ausentismo" class="section">
-  <span class="source-tag source-live">● Datos en vivo — Google Sheets</span>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)" id="aus-sinart">—</div><div class="kpi-label">Sin ART</div><div class="kpi-sub">días</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)" id="aus-carp">—</div><div class="kpi-label">Carp. médica</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--violeta)" id="aus-ausencia">—</div><div class="kpi-label">Ausencias</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)" id="aus-art">—</div><div class="kpi-label">ART días</div></div>
+  <span class="src slv">● Datos 2026 — actualizado</span>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">790</div><div class="kl">Sin ART</div><div class="ks">días</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">619</div><div class="kl">Carp. médica</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--violeta)">121</div><div class="kl">Ausencias</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">615</div><div class="kl">ART días</div></div>
   </div>
-  <div class="stitle">Por tipo de inasistencia</div>
+  <div class="st">Por tipo de inasistencia</div>
   <div class="card" id="aus-tipos"></div>
-  <div class="stitle">Por sector</div>
+  <div class="st">Por sector</div>
   <div class="card" id="aus-sector"></div>
-  <div class="stitle">Por mes</div>
-  <div class="card">
-    <svg viewBox="0 0 320 130" style="width:100%;display:block" id="aus-mes-chart">
-      <text x="160" y="65" fill="#888" font-size="11" text-anchor="middle">Cargando...</text>
-    </svg>
-  </div>
+  <div class="st">Por mes</div>
+  <div class="card"><svg viewBox="0 0 320 130" style="width:100%;display:block" id="aus-svg-m"></svg></div>
 </div>
 
-<!-- ═══ ART ════════════════════════════════════ -->
+<!-- ART -->
 <div id="tab-art" class="section">
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)" id="art-total">16</div><div class="kpi-label">Casos totales</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)" id="art-dias">276</div><div class="kpi-label">Días perdidos</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo2)">2</div><div class="kpi-label">Activos</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)">14</div><div class="kpi-label">Cerrados</div></div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">16</div><div class="kl">Casos totales</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">615</div><div class="kl">Días perdidos</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo2)">2</div><div class="kl">Activos</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">14</div><div class="kl">Cerrados</div></div>
   </div>
-  <div class="stitle">Casos activos</div>
-  <div class="case-card">
-    <div style="display:flex;justify-content:space-between">
-      <div><div style="font-weight:700;font-size:14px">Ceballos, Leonardo P.</div><div style="font-size:12px;color:var(--sec);margin-top:3px">Chofer · SA · Desde Marzo</div></div>
-      <div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--rojo);font-family:monospace">120+</div><div style="font-size:10px;color:var(--sec)">días</div></div>
-    </div>
-    <div class="badge-activo">🔴 ACTIVO</div>
-  </div>
-  <div class="case-card">
-    <div style="display:flex;justify-content:space-between">
-      <div><div style="font-weight:700;font-size:14px">Ruiz, Juan A.</div><div style="font-size:12px;color:var(--sec);margin-top:3px">Depósito · SRL · Desde Junio</div></div>
-      <div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--rojo);font-family:monospace">20+</div><div style="font-size:10px;color:var(--sec)">días</div></div>
-    </div>
-    <div class="badge-activo">🔴 ACTIVO</div>
-  </div>
+  <div class="st">Casos activos</div>
+  <div class="cc"><div style="display:flex;justify-content:space-between"><div><div style="font-weight:700;font-size:14px">Ceballos, Leonardo P.</div><div style="font-size:12px;color:var(--sec);margin-top:3px">Chofer · SA · Desde Marzo</div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--rojo);font-family:monospace">120+</div><div style="font-size:10px;color:var(--sec)">días</div></div></div><div class="ba">🔴 ACTIVO</div></div>
+  <div class="cc"><div style="display:flex;justify-content:space-between"><div><div style="font-weight:700;font-size:14px">Ruiz, Juan A.</div><div style="font-size:12px;color:var(--sec);margin-top:3px">Depósito · SRL · Desde Junio</div></div><div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--rojo);font-family:monospace">20+</div><div style="font-size:10px;color:var(--sec)">días</div></div></div><div class="ba">🔴 ACTIVO</div></div>
 </div>
 
-<!-- ═══ LIGA ═══════════════════════════════════ -->
+<!-- LIGA -->
 <div id="tab-liga" class="section">
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)">58.7</div><div class="kpi-label">Promedio</div><div class="kpi-sub">Ene–May</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--sec)">70</div><div class="kpi-label">Objetivo</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)">Feb</div><div class="kpi-label">Mejor mes</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)">-11.3</div><div class="kpi-label">Gap</div></div>
+  <span class="src slv" id="l-src">● Google Sheets</span>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)" id="l-prom">—</div><div class="kl">Promedio</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--sec)">70</div><div class="kl">Objetivo</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)" id="l-mejor">—</div><div class="kl">Mejor mes</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)" id="l-gap">—</div><div class="kl">Gap</div></div>
   </div>
-  <span class="source-tag source-live" id="liga-source-tag">● Google Sheets</span>
-  <div class="kpi-row" id="liga-kpis">
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)" id="liga-prom">58.7</div><div class="kpi-label">Promedio</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--sec)">70</div><div class="kpi-label">Objetivo</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)" id="liga-mejor">Feb</div><div class="kpi-label">Mejor mes</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)" id="liga-gap">-11.3</div><div class="kpi-label">Gap</div></div>
-  </div>
-  <div class="stitle">Top 10 — promedio acumulado</div>
+  <div class="st">Top 10 acumulado</div>
   <div class="card" id="liga-top"></div>
-  <div class="stitle">Promedio mensual vs objetivo (70 pts)</div>
-  <div class="card" id="liga-mes-chart"><svg viewBox="0 0 320 40" style="width:100%"><text x="160" y="25" fill="#888" font-size="11" text-anchor="middle">Cargando...</text></svg></div>
+  <div class="st">Promedio mensual vs objetivo</div>
+  <div class="card" id="liga-chart"></div>
 </div>
 
-<!-- ═══ ROTACIÓN ════════════════════════════════ -->
+<!-- ROTACIÓN -->
 <div id="tab-rotacion" class="section">
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)">10</div><div class="kpi-label">Bajas Ene–Jun</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)">6</div><div class="kpi-label">Ingresos</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)">0.81%</div><div class="kpi-label">Tasa prom.</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--txt)">210</div><div class="kpi-label">Dot. actual</div></div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">10</div><div class="kl">Bajas Ene–Jun</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">6</div><div class="kl">Ingresos</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">0.81%</div><div class="kl">Tasa prom.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--txt)">210</div><div class="kl">Dot. actual</div></div>
   </div>
-  <div class="stitle">Detalle mensual</div>
+  <div class="st">Detalle mensual</div>
   <div class="card" id="rot-tabla"></div>
 </div>
 
-<!-- ═══ VACACIONES ══════════════════════════════ -->
+<!-- VACACIONES -->
 <div id="tab-vacaciones" class="section">
-  <span class="source-tag source-live">● Datos en vivo — Google Sheets</span>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--txt)" id="vac-total">—</div><div class="kpi-label">Días corresp.</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)" id="vac-tom">—</div><div class="kpi-label">Tomados</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)" id="vac-pend">—</div><div class="kpi-label">Pendientes</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--sec)" id="vac-emp">—</div><div class="kpi-label">Empleados</div></div>
+  <span class="src slv">● Google Sheets</span>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--txt)" id="v-tot">—</div><div class="kl">Días corresp.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)" id="v-tom">—</div><div class="kl">Tomados</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)" id="v-pen">—</div><div class="kl">Pendientes</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--sec)" id="v-emp">—</div><div class="kl">Empleados</div></div>
   </div>
-  <div class="stitle">Por empresa</div>
-  <div id="vac-empresas"></div>
-  <div class="alert alert-warn">
-    <div class="alert-title" style="color:var(--amarillo)">⚠ ATENCIÓN</div>
-    <div class="alert-body" id="vac-alerta">Cargando datos de vacaciones...</div>
-  </div>
+  <div class="st">Por empresa</div>
+  <div id="vac-list"></div>
+  <div class="alw"><div class="alt" style="color:var(--amarillo)">⚠ ATENCIÓN</div><div class="alb" id="v-alert">Cargando...</div></div>
 </div>
 
-<!-- ═══ COSTOS F931 ══════════════════════════════ -->
+<!-- COSTOS -->
 <div id="tab-costos" class="section">
-  <span class="source-tag source-live" id="f931-source-tag">● Google Sheets</span>
-  <div class="hero hero-costos">
-    <div class="hero-eyebrow" style="color:var(--verde)">💼 Costo laboral total — 2026</div>
-    <div class="hero-num" style="color:var(--verde)" id="cos-total">—</div>
-    <div class="hero-grid">
-      <div class="hero-cell"><div class="hero-cell-val" id="cos-rem">—</div><div class="hero-cell-lbl">Remuneraciones</div></div>
-      <div class="hero-cell"><div class="hero-cell-val" id="cos-contrib">—</div><div class="hero-cell-lbl">Contribuciones</div></div>
-      <div class="hero-cell"><div class="hero-cell-val" id="cos-afip">—</div><div class="hero-cell-lbl">AFIP total</div></div>
+  <span class="src slv" id="c-src">● Google Sheets</span>
+  <div class="hero hc">
+    <div class="he" style="color:var(--verde)">💼 Costo laboral total — 2026</div>
+    <div class="hn" style="color:var(--verde)" id="c-tot">—</div>
+    <div class="hg">
+      <div class="hcl"><div class="hcv" id="c-rem">—</div><div class="hcl2">Remuneraciones</div></div>
+      <div class="hcl"><div class="hcv" id="c-con">—</div><div class="hcl2">Contribuciones</div></div>
+      <div class="hcl"><div class="hcv" id="c-afip">—</div><div class="hcl2">AFIP total</div></div>
     </div>
   </div>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)" id="cos-diario">$137K</div><div class="kpi-label">Costo/día/emp.</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--azul)" id="cos-pctContrib">21.4%</div><div class="kpi-label">% contribuciones</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)">$120.5M</div><div class="kpi-label">Costo ausencias</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo2)">3.2%</div><div class="kpi-label">% perdido</div></div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)" id="c-dia">—</div><div class="kl">$/día/emp.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--azul)" id="c-pct">—</div><div class="kl">% contrib.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)" id="c-caus2">—</div><div class="kl">Costo aus.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo2)" id="c-cpct2">—</div><div class="kl">% perdido</div></div>
   </div>
-  <div class="stitle">Por empresa</div>
-  <div id="costos-empresas"></div>
-  <div class="stitle">Costo del ausentismo</div>
-  <div class="alert alert-danger">
-    <div class="alert-title" style="color:var(--rojo)">💸 Impacto económico de las ausencias</div>
-    <div class="impacto-row">
-      <div><div style="font-size:12px;color:var(--txt)">Carpeta médica + ausencias</div><div style="font-size:11px;color:var(--sec)" id="aus-dias-label">600 días × $137K/día</div></div>
-      <div style="font-size:20px;font-weight:800;color:var(--amarillo);font-family:monospace" id="cos-aus-sinart">$82.5M</div>
+  <div class="st">Por empresa</div>
+  <div id="cos-list"></div>
+  <div class="st">Impacto del ausentismo</div>
+  <div class="ald">
+    <div class="alt" style="color:var(--rojo)">💸 Costo económico de las ausencias</div>
+    <div class="ir">
+      <div><div style="font-size:12px;color:var(--txt)">Carpeta médica + ausencias</div><div style="font-size:11px;color:var(--sec)" id="c-l1">790 días × —/día</div></div>
+      <div style="font-size:20px;font-weight:800;color:var(--amarillo);font-family:monospace" id="c-csa">—</div>
     </div>
-    <div class="impacto-row">
-      <div><div style="font-size:12px;color:var(--txt)">ART / Accidentes</div><div style="font-size:11px;color:var(--sec)" id="art-dias-label">276 días × $137K/día</div></div>
-      <div style="font-size:20px;font-weight:800;color:var(--rojo);font-family:monospace" id="cos-aus-art">$38.0M</div>
+    <div class="ir">
+      <div><div style="font-size:12px;color:var(--txt)">ART / Accidentes</div><div style="font-size:11px;color:var(--sec)" id="c-l2">615 días × —/día</div></div>
+      <div style="font-size:20px;font-weight:800;color:var(--rojo);font-family:monospace" id="c-cart">—</div>
     </div>
-    <div class="impacto-total">
+    <div class="it">
       <span style="font-weight:700;font-size:13px">TOTAL</span>
-      <span style="font-size:26px;font-weight:900;color:var(--rojo);font-family:monospace" id="cos-aus-total">$120.5M</span>
+      <span style="font-size:26px;font-weight:900;color:var(--rojo);font-family:monospace" id="c-ctot">—</span>
     </div>
   </div>
 </div>
 
-<!-- ═══ H&S ══════════════════════════════════════ -->
+<!-- H&S -->
 <div id="tab-hs" class="section">
-  <span class="source-tag source-live" id="hs-source-tag">● Google Sheets</span>
-  <div class="kpi-row">
-    <div class="kpi"><div class="kpi-val" style="color:var(--rojo)" id="hs-acc">—</div><div class="kpi-label">Accidentes</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--amarillo)" id="hs-inc">—</div><div class="kpi-label">Incidentes</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)" id="hs-capEjec">—</div><div class="kpi-label">Cap. ejec.</div><div class="kpi-sub" id="hs-capSub">de —</div></div>
-    <div class="kpi"><div class="kpi-val" style="color:var(--verde)" id="hs-cumpl">—</div><div class="kpi-label">Cumplimiento</div></div>
+  <span class="src slv" id="h-src">● Google Sheets</span>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)" id="h-acc">—</div><div class="kl">Accidentes</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)" id="h-inc">—</div><div class="kl">Incidentes</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)" id="h-ce">—</div><div class="kl">Cap. ejec.</div><div class="ks" id="h-cs">de —</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)" id="h-cum">—</div><div class="kl">Cumplim.</div></div>
   </div>
   <div style="display:flex;gap:8px;margin-bottom:12px">
-    <div class="kpi" style="flex:1"><div class="kpi-val" style="color:var(--rojo)" id="hs-actos">—</div><div class="kpi-label">Actos inseguros</div></div>
-    <div class="kpi" style="flex:1"><div class="kpi-val" style="color:var(--amarillo)" id="hs-cond">—</div><div class="kpi-label">Cond. inseguras</div></div>
+    <div class="kpi" style="flex:1"><div class="kv" style="color:var(--rojo)" id="h-act">—</div><div class="kl">Actos inseguros</div></div>
+    <div class="kpi" style="flex:1"><div class="kv" style="color:var(--amarillo)" id="h-cnd">—</div><div class="kl">Cond. inseguras</div></div>
   </div>
-  <div class="stitle">Capacitaciones — prog. vs ejec.</div>
-  <div class="card" id="hs-cap-chart">
-    <svg viewBox="0 0 320 40" style="width:100%"><text x="160" y="25" fill="#888" font-size="11" text-anchor="middle">Cargando...</text></svg>
-  </div>
-  <div class="stitle">Evolución mensual</div>
-  <div class="card" id="hs-mes-tabla"></div>
+  <div class="st">Capacitaciones</div>
+  <div class="card" id="h-chart"></div>
+  <div class="st">Detalle mensual</div>
+  <div class="card" id="h-tabla"></div>
 </div>
 
-</div><!-- /content -->
+</div>
 
 <script>
-// ══════════════════════════════════════════════
-// GOOGLE SHEETS URLS
-// ══════════════════════════════════════════════
-const SHEETS = {
-  f931:       'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJL6WJFbHKlwDsL-YZl2sU2vNStQUiJsqFAXSWPN-e9AO83Me-1iczpisEjFFdGxZ-4hsteiUI3zmt/pub?gid=0&single=true&output=csv',
-  vacaciones: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR85PzqudQsybUeAZVwAHri_kL8j-v9sADxu6hp8yURYvuq_K-Cy9lGM3Z3IcGBj2TalsIQculWsALc/pub?gid=0&single=true&output=csv',
-  ausentismo: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTbLfCPWhBhTE81QpSXH6lPYGlX40zdHKbNUrJTNr0Pi7i4TsnA2AfXI3R2lM6d7mKWsJwKzz1Hf6rh/pub?gid=1377804940&single=true&output=csv',
-  nomina:     'https://docs.google.com/spreadsheets/d/e/2PACX-1vR13wnjtWDfk5xivOFQp09x0ZTlXubxaKf5ZF2QKxTCDfugYFx9JfoVRc1qfqO0FL6qIs8ehl25kPmz/pub?gid=1614023532&single=true&output=csv',
-  liga:       'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqm5sVa9ONBEQBrvjFKHGsYPDH_JeEBzKxqxVBt0tU5yqr8XcTM0kvRahk7_S4sJQDCKswSZ3OrR-u/pub?gid=913656544&single=true&output=csv',
-  hs:         'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkP0Ls3eQ-TSFVuZJzyVyRvf-29nO2NAbnEFdC1W0yIJ3BQEVXeQAyQQDJm8eSIA/pub?gid=303920372&single=true&output=csv',
-  // Próximo: rotacion
+// ── URLs ──────────────────────────────────────
+const U={
+  f931:'https://docs.google.com/spreadsheets/d/e/2PACX-1vRJL6WJFbHKlwDsL-YZl2sU2vNStQUiJsqFAXSWPN-e9AO83Me-1iczpisEjFFdGxZ-4hsteiUI3zmt/pub?gid=0&single=true&output=csv',
+  vac: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR85PzqudQsybUeAZVwAHri_kL8j-v9sADxu6hp8yURYvuq_K-Cy9lGM3Z3IcGBj2TalsIQculWsALc/pub?gid=0&single=true&output=csv',
+  nom: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR13wnjtWDfk5xivOFQp09x0ZTlXubxaKf5ZF2QKxTCDfugYFx9JfoVRc1qfqO0FL6qIs8ehl25kPmz/pub?gid=1614023532&single=true&output=csv',
+  liga:'https://docs.google.com/spreadsheets/d/e/2PACX-1vTqm5sVa9ONBEQBrvjFKHGsYPDH_JeEBzKxqxVBt0tU5yqr8XcTM0kvRahk7_S4sJQDCKswSZ3OrR-u/pub?gid=913656544&single=true&output=csv',
+  hs:  'https://docs.google.com/spreadsheets/d/e/2PACX-1vRkP0Ls3eQ-TSFVuZJzyVyRvf-29nO2NAbnEFdC1W0yIJ3BQEVXeQAyQQDJm8eSIA/pub?gid=303920372&single=true&output=csv',
 };
 
-// ══════════════════════════════════════════════
-// STATIC FALLBACK DATA
-// ══════════════════════════════════════════════
-const STATIC = {
-  f931: {
-    totalCosto:3769.5, totalRem:2964.5, totalContrib:805.0, totalAFIP:1302.1,
-    porEmpresa:[
-      {emp:'SA', rem:1026.8,contrib:281.7,costo:1308.5,afip:449.5},
-      {emp:'SRL',rem:990.9, contrib:278.1,costo:1268.9,afip:446.5},
-      {emp:'TMD',rem:532.6, contrib:135.4,costo:668.0, afip:225.9},
-      {emp:'EXP',rem:414.3, contrib:109.8,costo:524.0, afip:180.2},
-    ]
-  },
-  vacaciones: {
-    totalDias:4641, tomados:308, pendientes:4333, empleados:205,
-    porEmpresa:[
-      {emp:'SA', total:1687,tom:112,pend:1575,count:62},
-      {emp:'SRL',total:1771,tom:140,pend:1631,count:64},
-      {emp:'EXP',total:490, tom:28, pend:462, count:38},
-      {emp:'TMD',total:665, tom:28, pend:637, count:39},
-    ]
-  },
-  ausentismo: {
-    tipos:[
-      {tipo:'ART',          dias:615},
-      {tipo:'Carpeta médica',dias:619},
-      {tipo:'Ausencia',      dias:121},
-      {tipo:'Lic. especial', dias:25},
-      {tipo:'Perm. sindical',dias:13},
-      {tipo:'Suspensión',    dias:12},
-    ],
-    sectores:[
-      {sector:'Chofer',         dias:843},
-      {sector:'Depósito',       dias:272},
-      {sector:'Tráfico',        dias:114},
-      {sector:'Taller',         dias:96},
-      {sector:'Administración', dias:51},
-      {sector:'RRHH',           dias:11},
-      {sector:'Facturación',    dias:6},
-      {sector:'Comercial',      dias:6},
-      {sector:'Maestranza',     dias:2},
-    ],
-    porMes:[
-      {mes:'Ene',dias:82},{mes:'Feb',dias:180},{mes:'Mar',dias:153},
-      {mes:'Abr',dias:202},{mes:'May',dias:303},{mes:'Jun',dias:154},
-      {mes:'Jul',dias:150},{mes:'Ago',dias:17},
-    ]
-  }
+// ── Datos fijos ───────────────────────────────
+const AUS_TIPOS=[
+  {t:'ART',d:615},{t:'Carpeta médica',d:619},{t:'Ausencia',d:121},
+  {t:'Lic. especial',d:25},{t:'Perm. sindical',d:13},{t:'Suspensión',d:12}
+];
+const AUS_SEC=[
+  {s:'Chofer',d:843},{s:'Depósito',d:272},{s:'Tráfico',d:114},
+  {s:'Taller',d:96},{s:'Administración',d:51},{s:'RRHH',d:11},
+  {s:'Facturación',d:6},{s:'Comercial',d:6},{s:'Maestranza',d:2}
+];
+const AUS_MES=[
+  {m:'Ene',d:82},{m:'Feb',d:180},{m:'Mar',d:153},{m:'Abr',d:202},
+  {m:'May',d:303},{m:'Jun',d:154},{m:'Jul',d:150},{m:'Ago',d:17}
+];
+const ROT=[
+  {m:'Ene',i:205,ing:3,b:2,f:206},{m:'Feb',i:206,ing:1,b:4,f:203},
+  {m:'Mar',i:204,ing:0,b:1,f:203},{m:'Abr',i:204,ing:0,b:0,f:204},
+  {m:'May',i:204,ing:0,b:2,f:202},{m:'Jun',i:209,ing:2,b:1,f:210}
+];
+const FACT=[
+  {m:'Ene',t:2259.3,p:123.3,pct:5.46},{m:'Feb',t:1974.9,p:89.5,pct:4.53},
+  {m:'Mar',t:2502.6,p:131.6,pct:5.26},{m:'Abr',t:3256.4,p:184.8,pct:5.68},
+  {m:'May',t:3505.0,p:213.9,pct:6.10}
+];
+const NOM_ST=[
+  {n:'SA',t:56,c:35,o:21},{n:'SRL',t:55,c:30,o:25},
+  {n:'EXP',t:53,c:31,o:22},{n:'TMD',t:42,c:33,o:9}
+];
+const LIGA_ST=[
+  {n:'Gonzalez Sergio A.',e:'SA',p:92.0},{n:'Peralta Hernan F.',e:'SA',p:90.0},
+  {n:'Espinola Esteban N.',e:'SRL',p:87.6},{n:'Audisio Juan M.',e:'SA',p:82.4},
+  {n:'Avila Criado Nelson D.',e:'TMD',p:82.0},{n:'Molina Lucas T.',e:'TMD',p:81.6},
+  {n:'Acevedo Juan J.',e:'SRL',p:79.6},{n:'Vaschkor Fernando M.',e:'SA',p:79.2},
+  {n:'Farias Jonatan D.',e:'TMD',p:79.2},{n:'Ludueña Walter R.',e:'SRL',p:78.0}
+];
+const F931_ST={
+  tot:3769.5,rem:2964.5,con:805.0,afip:1302.1,
+  emp:[
+    {e:'SA',r:1026.8,c:281.7,t:1308.5,a:449.5},
+    {e:'SRL',r:990.9,c:278.1,t:1268.9,a:446.5},
+    {e:'TMD',r:532.6,c:135.4,t:668.0,a:225.9},
+    {e:'EXP',r:414.3,c:109.8,t:524.0,a:180.2}
+  ]
 };
 
-// ══════════════════════════════════════════════
-// HELPERS
-// ══════════════════════════════════════════════
-function fmtM(n){return '$'+Number(n).toLocaleString('es-AR',{minimumFractionDigits:1,maximumFractionDigits:1})+'M'}
-function fmtN(n){return Number(n).toLocaleString('es-AR')}
-function pct(a,b){return ((a/b)*100).toFixed(1)+'%'}
-function setEl(id,val){const e=document.getElementById(id);if(e)e.textContent=val}
-
-function parseArgNum(s){
+// ── Helpers ───────────────────────────────────
+const $=id=>document.getElementById(id);
+function se(id,v){const e=$(id);if(e)e.textContent=v}
+function fM(n){return '$'+Number(n).toLocaleString('es-AR',{minimumFractionDigits:1,maximumFractionDigits:1})+'M'}
+function fN(n){return Number(Math.round(n)).toLocaleString('es-AR')}
+function pan(s){
   if(!s)return 0;
   s=String(s).replace(/\$/g,'').replace(/\s/g,'').trim();
-  // Handle Argentine format: 1.234.567,89
-  const parts=s.split(',');
-  if(parts.length===2){
-    return parseFloat(parts[0].replace(/\./g,'')+'.'+parts[1])||0;
-  }
+  const p=s.split(',');
+  if(p.length===2)return parseFloat(p[0].replace(/\./g,'')+'.'+p[1])||0;
   return parseFloat(s.replace(/\./g,''))||0;
 }
-
-function parseCSV(text){
+function csv(t){
   const rows=[];
-  const lines=text.split('\n');
-  for(const line of lines){
+  for(const line of t.split('\n')){
     if(!line.trim())continue;
-    const row=[];let cur='';let inQ=false;
+    const row=[];let c='';let q=false;
     for(let i=0;i<line.length;i++){
-      if(line[i]==='"'&&!inQ){inQ=true;continue;}
-      if(line[i]==='"'&&inQ){inQ=false;continue;}
-      if(line[i]===','&&!inQ){row.push(cur.trim());cur='';continue;}
-      cur+=line[i];
+      if(line[i]==='"'&&!q){q=true;continue}
+      if(line[i]==='"'&&q){q=false;continue}
+      if(line[i]===','&&!q){row.push(c.trim());c='';continue}
+      c+=line[i];
     }
-    row.push(cur.trim());
-    rows.push(row);
+    row.push(c.trim());rows.push(row);
   }
   return rows;
 }
-
-async function fetchCSV(url){
-  const res=await fetch(url);
-  if(!res.ok)throw new Error('HTTP '+res.status);
-  return parseCSV(await res.text());
+async function fc(url){
+  const r=await fetch(url);
+  if(!r.ok)throw new Error(r.status);
+  return csv(await r.text());
 }
+function step(s){se('lst',s)}
 
-function setStep(msg){setEl('loadingStep',msg)}
-
-// ══════════════════════════════════════════════
-// PARSERS
-// ══════════════════════════════════════════════
-function parseF931(rows){
-  const result={meses:[],empresas:{SA:{rem:0,contrib:0,afip:0},SRL:{rem:0,contrib:0,afip:0},EXP:{rem:0,contrib:0,afip:0},TMD:{rem:0,contrib:0,afip:0}}};
-  const mesData={};
-  for(let i=1;i<rows.length;i++){
-    const r=rows[i];
-    if(!r[0]||!r[1])continue;
-    const mes=r[0].trim();
-    const emp=r[1].trim();
-    const rem=parseArgNum(r[3])/1e6;
-    const contrib=parseArgNum(r[5])/1e6;
-    const afip=parseArgNum(r[6])/1e6;
-    if(!mesData[mes])mesData[mes]={mes,rem:0,contrib:0,costo:0};
-    mesData[mes].rem+=rem;
-    mesData[mes].contrib+=contrib;
-    mesData[mes].costo+=rem+contrib;
-    if(result.empresas[emp]){
-      result.empresas[emp].rem+=rem;
-      result.empresas[emp].contrib+=contrib;
-      result.empresas[emp].afip+=afip;
-    }
-  }
-  result.meses=Object.values(mesData);
-  result.totalRem=Object.values(result.empresas).reduce((s,e)=>s+e.rem,0);
-  result.totalContrib=Object.values(result.empresas).reduce((s,e)=>s+e.contrib,0);
-  result.totalCosto=result.totalRem+result.totalContrib;
-  result.totalAFIP=Object.values(result.empresas).reduce((s,e)=>s+e.afip,0);
-  result.porEmpresa=Object.entries(result.empresas).map(([emp,v])=>({
-    emp,rem:v.rem,contrib:v.contrib,costo:v.rem+v.contrib,afip:v.afip
-  })).sort((a,b)=>b.costo-a.costo);
-  return result;
-}
-
-function parseVacaciones(rows){
-  const result={totalDias:0,tomados:0,pendientes:0,empleados:0,porEmpresa:{}};
-  const empValid=['SA','SRL','EXP','TMD'];
-  for(let i=1;i<rows.length;i++){
-    const r=rows[i];
-    const emp=r[0]?.trim();
-    if(!emp||!empValid.includes(emp))continue;
-    const vac=parseArgNum(r[5]||0);
-    const liq=parseArgNum(r[6]||0);
-    const pend=parseArgNum(r[7]||0);
-    if(vac===0&&pend===0)continue;
-    result.totalDias+=vac;
-    result.tomados+=liq;
-    result.pendientes+=pend;
-    result.empleados++;
-    if(!result.porEmpresa[emp])result.porEmpresa[emp]={emp,total:0,tom:0,pend:0,count:0};
-    result.porEmpresa[emp].total+=vac;
-    result.porEmpresa[emp].tom+=liq;
-    result.porEmpresa[emp].pend+=pend;
-    result.porEmpresa[emp].count++;
-  }
-  result.porEmpresaArr=Object.values(result.porEmpresa).sort((a,b)=>b.pend-a.pend);
-  return result;
-}
-
-function parseAusentismo(rows){
-  const result={tipos:[],sectores:[],porMes:[]};
-  const mesOrder=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const mesShort=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-
-  // Find tipo rows (col 0=tipo, col 1=dias) starting after header
-  // Find sector rows (col 7=sector, col 8=dias)
-  // Find mes row
-  let mesRowIdx=-1;
-  for(let i=0;i<rows.length;i++){
-    const r=rows[i];
-    // Tipo data: col0 has known types
-    const tipoNames=['ART','Ausencia','Carpeta medica','Carpeta médica','Licencia especial','Permiso sindical','Suspension','Suspensión'];
-    if(tipoNames.some(t=>r[0]&&r[0].toLowerCase().includes(t.toLowerCase().split(' ')[0]))){
-      const dias=parseArgNum(r[1]);
-      if(dias>0)result.tipos.push({tipo:r[0].trim(),dias});
-    }
-    // Sector data: col 7 or 8
-    const sectorNames=['Administracion','Chofer','Comercial','Compras','Deposito','Facturacion','Maestranza','RRHH','Taller','Trafico'];
-    const col7=r[7]?.trim()||'';
-    if(sectorNames.some(s=>col7.toLowerCase().includes(s.toLowerCase()))){
-      const dias=parseArgNum(r[8]||r[9]);
-      if(dias>0)result.sectores.push({sector:col7,dias});
-    }
-    // Mes row: col0 = "MES"
-    if(r[0]&&r[0].toString().toUpperCase().trim()==='MES'){mesRowIdx=i;}
-    if(mesRowIdx>0&&i===mesRowIdx+1){
-      // This row has the dias per mes
-      const mesRow=rows[mesRowIdx];
-      for(let c=1;c<mesRow.length;c++){
-        const mesNombre=mesRow[c]?.trim();
-        const dias=parseArgNum(r[c]);
-        if(mesNombre&&dias>0){
-          const idx=mesOrder.findIndex(m=>m.toLowerCase()===mesNombre.toLowerCase());
-          const label=idx>=0?mesShort[idx]:mesNombre.substring(0,3);
-          result.porMes.push({mes:label,dias,order:idx>=0?idx:99});
-        }
-      }
-      result.porMes.sort((a,b)=>a.order-b.order);
-    }
-  }
-  // Sort sectores by dias
-  result.sectores.sort((a,b)=>b.dias-a.dias);
-  return result;
-}
-
-// ══════════════════════════════════════════════
-// RENDER FUNCTIONS
-// ══════════════════════════════════════════════
-function renderAusentismoChart(porMes,svgId){
-  if(!porMes||!porMes.length)return;
-  const svg=document.getElementById(svgId);
-  if(!svg)return;
-  const max=Math.max(...porMes.map(m=>m.dias));
-  const W=320,H=130,padL=35,padR=10,padT=10,padB=30;
-  const cW=W-padL-padR,cH=H-padT-padB;
-  const n=porMes.length;
-  const barW=Math.min(35,Math.floor(cW/n)-4);
-  const gap=(cW-(barW*n))/(n+1);
-
-  let lines=`
-    <line x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}" stroke="#2A2A2A" stroke-width="1"/>
-    <line x1="${padL}" y1="${padT+cH/2}" x2="${W-padR}" y2="${padT+cH/2}" stroke="#2A2A2A" stroke-width="1"/>
-    <line x1="${padL}" y1="${padT+cH}" x2="${W-padR}" y2="${padT+cH}" stroke="#2A2A2A" stroke-width="1"/>
-    <text x="${padL-4}" y="${padT+4}" fill="#888" font-size="8" text-anchor="end">${max}</text>
-    <text x="${padL-4}" y="${padT+cH/2+4}" fill="#888" font-size="8" text-anchor="end">${Math.round(max/2)}</text>
-    <text x="${padL-4}" y="${padT+cH+4}" fill="#888" font-size="8" text-anchor="end">0</text>`;
-
-  // Area polygon points
-  const pts=porMes.map((m,i)=>{
-    const x=padL+gap+(barW/2)+i*(barW+gap);
-    const y=padT+cH-(m.dias/max)*cH;
-    return `${x},${y}`;
-  });
-  const firstX=padL+gap+barW/2;
-  const lastX=padL+gap+barW/2+(n-1)*(barW+gap);
-  lines+=`<defs><linearGradient id="gR" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#CC0000" stop-opacity=".4"/><stop offset="100%" stop-color="#CC0000" stop-opacity=".02"/></linearGradient></defs>`;
-  lines+=`<polygon points="${pts.join(' ')} ${lastX},${padT+cH} ${firstX},${padT+cH}" fill="url(#gR)"/>`;
-  lines+=`<polyline points="${pts.join(' ')}" fill="none" stroke="#CC0000" stroke-width="2"/>`;
-
-  porMes.forEach((m,i)=>{
-    const cx=padL+gap+(barW/2)+i*(barW+gap);
-    const cy=padT+cH-(m.dias/max)*cH;
-    lines+=`<circle cx="${cx}" cy="${cy}" r="3" fill="#CC0000"/>`;
-    lines+=`<text x="${cx}" y="${cy-5}" fill="#888" font-size="7" text-anchor="middle">${m.dias}</text>`;
-    lines+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${m.mes}</text>`;
-  });
-  svg.innerHTML=lines;
-}
-
-function renderF931(data){
-  setEl('cos-total',fmtM(data.totalCosto));
-  setEl('cos-rem',fmtM(data.totalRem));
-  setEl('cos-contrib',fmtM(data.totalContrib));
-  setEl('cos-afip',fmtM(data.totalAFIP));
-  const pctC=((data.totalContrib/data.totalCosto)*100).toFixed(1);
-  setEl('cos-pctContrib',pctC+'%');
-  const diasHab=22;
-  const totalEmpMes=data.meses.reduce((s,m)=>s+210,0); // approx
-  const costoDiario=Math.round(data.totalCosto*1e6/(totalEmpMes*diasHab));
-  setEl('cos-diario','$'+Math.round(costoDiario/1000)+'K');
-
-  // Costo ausentismo
-  const ausTotal=parseArgNum(document.getElementById('aus-sinart')?.textContent||'600');
-  const artTotal=parseArgNum(document.getElementById('aus-art')?.textContent||'276');
-  const cosAus=(ausTotal*costoDiario/1e6).toFixed(1);
-  const cosART=(artTotal*costoDiario/1e6).toFixed(1);
-  const cosTotal=(parseFloat(cosAus)+parseFloat(cosART)).toFixed(1);
-  setEl('cos-aus-sinart','$'+cosAus+'M');
-  setEl('cos-aus-art','$'+cosART+'M');
-  setEl('cos-aus-total','$'+cosTotal+'M');
-  setEl('r-costoAus','$'+cosTotal+'M');
-  setEl('r-costoSinART','$'+cosAus+'M');
-  setEl('r-costoART','$'+cosART+'M');
-  setEl('aus-dias-label',ausTotal+' días × $'+Math.round(costoDiario/1000)+'K/día');
-  setEl('art-dias-label',artTotal+' días × $'+Math.round(costoDiario/1000)+'K/día');
-
-  // Empresas
-  const maxC=Math.max(...data.porEmpresa.map(e=>e.costo));
-  document.getElementById('costos-empresas').innerHTML=data.porEmpresa.map(e=>`
-    <div class="card card-sm" style="margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-weight:800;color:var(--verde);font-size:15px">${e.emp}</span>
-        <div>
-          <span style="font-size:18px;font-weight:800;font-family:monospace">${fmtM(e.costo)}</span>
-          <span style="font-size:10px;color:var(--sec);margin-left:6px">${(e.costo/data.totalCosto*100).toFixed(1)}%</span>
-        </div>
-      </div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(e.costo/maxC*100).toFixed(0)}%;background:var(--verde)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--sec);margin-top:4px">
-        <span>Rem: ${fmtM(e.rem)}</span>
-        <span>Contrib: ${fmtM(e.contrib)}</span>
-        <span>AFIP: ${fmtM(e.afip)}</span>
-      </div>
-    </div>`).join('');
-}
-
-function renderVacaciones(data){
-  setEl('vac-total',fmtN(Math.round(data.totalDias)));
-  setEl('vac-tom',fmtN(Math.round(data.tomados)));
-  setEl('vac-pend',fmtN(Math.round(data.pendientes)));
-  setEl('vac-emp',data.empleados);
-  const pctPend=(data.pendientes/data.totalDias*100).toFixed(1);
-  setEl('vac-alerta',`El ${pctPend}% de los días (${fmtN(Math.round(data.pendientes))}) están aún pendientes de tomar.`);
-  const list=data.porEmpresaArr||Object.values(data.porEmpresa||{});
-  const maxP=Math.max(...list.map(e=>e.pend));
-  document.getElementById('vac-empresas').innerHTML=list.map(e=>`
-    <div class="card card-sm" style="margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <div>
-          <span style="font-weight:800;color:var(--rojo);font-size:15px">${e.emp}</span>
-          <span style="font-size:11px;color:var(--sec);margin-left:8px">${e.count} empleados</span>
-        </div>
-        <div style="text-align:right">
-          <span style="font-size:17px;font-weight:800;color:var(--amarillo);font-family:monospace">${fmtN(Math.round(e.pend))}</span>
-          <span style="font-size:10px;color:var(--sec);margin-left:4px">pend.</span>
-        </div>
-      </div>
-      <div class="bar-track" style="height:8px"><div class="bar-fill" style="width:${(e.tom/e.total*100).toFixed(0)}%;background:var(--verde)"></div></div>
-      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--sec);margin-top:4px">
-        <span>✅ Tomados: ${Math.round(e.tom)} días</span>
-        <span>Total: ${fmtN(Math.round(e.total))} días</span>
-      </div>
-    </div>`).join('');
-}
-
-function renderAusentismo(data){
-  // KPIs
-  const art=data.tipos.find(t=>t.tipo.toUpperCase()==='ART');
-  const carp=data.tipos.find(t=>t.tipo.toLowerCase().includes('carp'));
-  const aus=data.tipos.find(t=>t.tipo.toLowerCase()==='ausencia');
-  const totalSinART=data.tipos.filter(t=>t.tipo.toUpperCase()!=='ART').reduce((s,t)=>s+t.dias,0);
-  const artDias=art?art.dias:0;
-  setEl('aus-sinart',fmtN(totalSinART));
-  setEl('aus-carp',carp?fmtN(carp.dias):'—');
-  setEl('aus-ausencia',aus?fmtN(aus.dias):'—');
-  setEl('aus-art',fmtN(artDias));
-  setEl('r-diasAus',fmtN(totalSinART));
-  setEl('r-artTotal',fmtN(artDias));
-
+// ── Render ausentismo (fijo) ──────────────────
+function renderAus(){
+  const sinART=AUS_TIPOS.filter(t=>t.t!=='ART').reduce((s,t)=>s+t.d,0);
+  se('r-aus',fN(sinART));se('r-art','615');
   // Tipos
-  const maxT=Math.max(...data.tipos.map(t=>t.dias));
-  document.getElementById('aus-tipos').innerHTML=data.tipos.map((t,i)=>`
+  const mx=Math.max(...AUS_TIPOS.map(t=>t.d));
+  $('aus-tipos').innerHTML=AUS_TIPOS.map(t=>`
     <div style="margin-bottom:9px">
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
-        <span style="color:var(--sec)">${t.tipo}</span>
-        <span style="font-weight:700;color:${t.tipo.toUpperCase()==='ART'?'var(--rojo)':t.tipo.toLowerCase().includes('carp')?'var(--amarillo)':'var(--txt)'}">${fmtN(t.dias)} días</span>
+        <span style="color:var(--sec)">${t.t}</span>
+        <span style="font-weight:700;color:${t.t==='ART'?'var(--rojo)':t.t.includes('arp')?'var(--amarillo)':'var(--txt)'}">${fN(t.d)} días</span>
       </div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(t.dias/maxT*100).toFixed(0)}%;background:${t.tipo.toUpperCase()==='ART'?'var(--rojo)':t.tipo.toLowerCase().includes('carp')?'var(--amarillo)':'var(--azul)'}"></div></div>
+      <div class="bt"><div class="bf" style="width:${(t.d/mx*100).toFixed(0)}%;background:${t.t==='ART'?'var(--rojo)':t.t.includes('arp')?'var(--amarillo)':'var(--azul)'}"></div></div>
     </div>`).join('');
-
-  // Sectores
-  const maxS=Math.max(...data.sectores.map(s=>s.dias));
-  document.getElementById('aus-sector').innerHTML=data.sectores.map(s=>`
+  // Sector
+  const ms=Math.max(...AUS_SEC.map(s=>s.d));
+  $('aus-sector').innerHTML=AUS_SEC.map(s=>`
     <div style="margin-bottom:9px">
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
-        <span style="color:var(--sec)">${s.sector}</span>
-        <span style="font-weight:700">${fmtN(s.dias)} días</span>
+        <span style="color:var(--sec)">${s.s}</span><span style="font-weight:700">${fN(s.d)} días</span>
       </div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(s.dias/maxS*100).toFixed(0)}%;background:var(--rojo)"></div></div>
+      <div class="bt"><div class="bf" style="width:${(s.d/ms*100).toFixed(0)}%;background:var(--rojo)"></div></div>
     </div>`).join('');
-
   // Charts
-  if(data.porMes.length){
-    renderAusentismoChart(data.porMes,'aus-mes-chart');
-    renderAusentismoChart(data.porMes,'aus-chart-resumen');
-  }
+  drawLine(AUS_MES.map(m=>({l:m.m,v:m.d})),'aus-svg-m');
+  drawLine(AUS_MES.map(m=>({l:m.m,v:m.d})),'aus-svg-r');
 }
 
-// ══════════════════════════════════════════════
-// STATIC DATA RENDERERS
-// ══════════════════════════════════════════════
-
-
-
-function parseHS(rows){
-  if(!rows||rows.length<2)return null;
-
-  // Find header row
-  let headerIdx=0;
-  for(let i=0;i<Math.min(5,rows.length);i++){
-    const r=rows[i].map(c=>c.toLowerCase().trim());
-    if(r.some(c=>c.includes('mes')||c.includes('accidente')||c.includes('incidente')||c.includes('capacit'))){
-      headerIdx=i; break;
-    }
-  }
-  const headers=rows[headerIdx].map(c=>c.toLowerCase().trim());
-  const iMes   = headers.findIndex(h=>h.includes('mes'));
-  const iAcc   = headers.findIndex(h=>h.includes('accidente'));
-  const iInc   = headers.findIndex(h=>h.includes('incidente'));
-  const iActos = headers.findIndex(h=>h.includes('acto'));
-  const iCond  = headers.findIndex(h=>h.includes('condic'));
-  const iCapP  = headers.findIndex(h=>h.includes('prog'));
-  const iCapE  = headers.findIndex(h=>h.includes('ejec'));
-
-  const meses=[];
-  let totAcc=0,totInc=0,totActos=0,totCond=0,totCapP=0,totCapE=0;
-
-  for(let i=headerIdx+1;i<rows.length;i++){
-    const r=rows[i];
-    if(!r[0]&&!r[1])continue;
-    const mes=(iMes>=0?r[iMes]:'').trim();
-    const acc=iAcc>=0?parseArgNum(r[iAcc]):0;
-    const inc=iInc>=0?parseArgNum(r[iInc]):0;
-    const actos=iActos>=0?parseArgNum(r[iActos]):0;
-    const cond=iCond>=0?parseArgNum(r[iCond]):0;
-    const capP=iCapP>=0?parseArgNum(r[iCapP]):0;
-    const capE=iCapE>=0?parseArgNum(r[iCapE]):0;
-
-    if(mes){
-      meses.push({mes,acc,inc,actos,cond,capP,capE});
-      totAcc+=acc; totInc+=inc; totActos+=actos; totCond+=cond;
-      totCapP+=capP; totCapE+=capE;
-    }
-  }
-
-  const cumpl=totCapP>0?Math.round((totCapE/totCapP)*100):0;
-  return {meses,totAcc,totInc,totActos,totCond,totCapP,totCapE,cumpl};
+// ── SVG line chart ────────────────────────────
+function drawLine(data,svgId){
+  const svg=$(svgId);if(!svg||!data.length)return;
+  const max=Math.max(...data.map(d=>d.v));
+  const W=320,H=130,pL=35,pR=10,pT=10,pB=25;
+  const cW=W-pL-pR,cH=H-pT-pB,n=data.length;
+  const bW=Math.min(35,Math.floor(cW/n)-4);
+  const gap=(cW-bW*n)/(n+1);
+  const pts=data.map((d,i)=>{
+    const x=pL+gap+bW/2+i*(bW+gap);
+    const y=pT+cH-(d.v/max)*cH;
+    return {x,y,v:d.v,l:d.l};
+  });
+  let s=`<defs><linearGradient id="g${svgId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#CC0000" stop-opacity=".4"/><stop offset="100%" stop-color="#CC0000" stop-opacity=".02"/></linearGradient></defs>`;
+  s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<line x1="${pL}" y1="${pT+cH/2}" x2="${W-pR}" y2="${pT+cH/2}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<text x="${pL-3}" y="${pT+4}" fill="#888" font-size="8" text-anchor="end">${max}</text>`;
+  s+=`<text x="${pL-3}" y="${pT+cH+4}" fill="#888" font-size="8" text-anchor="end">0</text>`;
+  const polyPts=pts.map(p=>`${p.x},${p.y}`).join(' ');
+  s+=`<polygon points="${polyPts} ${pts[n-1].x},${pT+cH} ${pts[0].x},${pT+cH}" fill="url(#g${svgId})"/>`;
+  s+=`<polyline points="${polyPts}" fill="none" stroke="#CC0000" stroke-width="2"/>`;
+  pts.forEach(p=>{
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="3" fill="#CC0000"/>`;
+    s+=`<text x="${p.x}" y="${p.y-5}" fill="#888" font-size="7" text-anchor="middle">${p.v}</text>`;
+    s+=`<text x="${p.x}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${p.l}</text>`;
+  });
+  svg.innerHTML=s;
 }
 
-function renderHS(data){
-  if(!data)return;
-  setEl('hs-acc',    data.totAcc);
-  setEl('hs-inc',    data.totInc);
-  setEl('hs-actos',  data.totActos);
-  setEl('hs-cond',   data.totCond);
-  setEl('hs-capEjec',data.totCapE);
-  setEl('hs-capSub', 'de '+data.totCapP);
-  setEl('hs-cumpl',  data.cumpl+'%');
-
-  const cumplEl=document.getElementById('hs-cumpl');
-  if(cumplEl) cumplEl.style.color=data.cumpl>=80?'var(--verde)':'var(--amarillo)';
-
-  // Capacitaciones chart
-  if(data.meses.length){
-    const maxCap=Math.max(...data.meses.map(m=>Math.max(m.capP,m.capE)),1);
-    const W=320,H=150,padL=35,padR=10,padT=10,padB=30;
-    const cW=W-padL-padR,cH=H-padT-padB;
-    const n=data.meses.length;
-    const grpW=Math.min(52,Math.floor(cW/n)-4);
-    const barW=Math.floor(grpW/2)-1;
-    const gap=(cW-(grpW*n))/(n+1);
-
-    let svg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">`;
-    svg+=`<line x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}" stroke="#2A2A2A" stroke-width="1"/>`;
-    svg+=`<line x1="${padL}" y1="${padT+cH/2}" x2="${W-padR}" y2="${padT+cH/2}" stroke="#2A2A2A" stroke-width="1"/>`;
-    svg+=`<line x1="${padL}" y1="${padT+cH}" x2="${W-padR}" y2="${padT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
-    svg+=`<text x="${padL-4}" y="${padT+4}" fill="#888" font-size="8" text-anchor="end">${maxCap}</text>`;
-    svg+=`<text x="${padL-4}" y="${padT+cH+4}" fill="#888" font-size="8" text-anchor="end">0</text>`;
-
-    data.meses.forEach((m,i)=>{
-      const gx=padL+gap+i*(grpW+gap);
-      const hP=(m.capP/maxCap)*cH; const yP=padT+cH-hP;
-      const hE=(m.capE/maxCap)*cH; const yE=padT+cH-hE;
-      svg+=`<rect x="${gx}" y="${yP}" width="${barW}" height="${hP}" fill="#2A2A2A" rx="2"/>`;
-      svg+=`<rect x="${gx+barW+1}" y="${yE}" width="${barW}" height="${hE}" fill="#22C55E" rx="2"/>`;
-      svg+=`<text x="${gx+barW}" y="${H-2}" fill="#888" font-size="8" text-anchor="middle">${m.mes.substring(0,3)}</text>`;
-    });
-    svg+=`<rect x="${padL}" y="${H-10}" width="8" height="7" fill="#2A2A2A" rx="1"/>`;
-    svg+=`<text x="${padL+11}" y="${H-3}" fill="#888" font-size="7">Prog.</text>`;
-    svg+=`<rect x="${padL+45}" y="${H-10}" width="8" height="7" fill="#22C55E" rx="1"/>`;
-    svg+=`<text x="${padL+56}" y="${H-3}" fill="#888" font-size="7">Ejec.</text>`;
-    svg+='</svg>';
-    document.getElementById('hs-cap-chart').innerHTML=svg;
-  }
-
-  // Tabla mensual
-  if(data.meses.length){
-    document.getElementById('hs-mes-tabla').innerHTML=
-      `<div class="det-grid det-head" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;">
-        <span>Mes</span><span style="text-align:center;color:var(--rojo)">Acc.</span>
-        <span style="text-align:center;color:var(--amarillo)">Inc.</span>
-        <span style="text-align:center">Actos</span>
-        <span style="text-align:center">Cap.P</span>
-        <span style="text-align:right;color:var(--verde)">Cap.E</span>
-      </div>`+
-      data.meses.map(m=>`
-      <div class="det-grid" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;">
-        <span style="font-weight:600">${m.mes.substring(0,3)}</span>
-        <span style="text-align:center;color:${m.acc>0?'var(--rojo)':'var(--sec)'}">${m.acc}</span>
-        <span style="text-align:center;color:${m.inc>0?'var(--amarillo)':'var(--sec)'}">${m.inc}</span>
-        <span style="text-align:center;color:var(--sec)">${m.actos}</span>
-        <span style="text-align:center;color:var(--sec)">${m.capP}</span>
-        <span style="text-align:right;color:var(--verde)">${m.capE}</span>
-      </div>`).join('');
-  }
-}
-
-function parseLiga(rows){
-  if(!rows||rows.length<2)return null;
-
-  // Find header row
-  let headerIdx=0;
-  for(let i=0;i<Math.min(5,rows.length);i++){
-    const r=rows[i].map(c=>c.toLowerCase().trim());
-    if(r.some(c=>c.includes('mes')||c.includes('chofer')||c.includes('nombre')||c.includes('punt'))){
-      headerIdx=i; break;
-    }
-  }
-  const headers=rows[headerIdx].map(c=>c.toLowerCase().trim());
-  const iMes    = headers.findIndex(h=>h.includes('mes'));
-  const iNombre = headers.findIndex(h=>h.includes('nombre')||h.includes('chofer')||h.includes('apellido'));
-  const iEmp    = headers.findIndex(h=>h.includes('empresa')||h==='emp'||h==='empresa');
-  const iPts    = headers.findIndex(h=>h.includes('punt')||h.includes('score')||h.includes('promedio')||h.includes('nota'));
-
-  if(iPts<0)return null;
-
-  const choferes={};
-  const meses={};
-  const mesOrder=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  const mesShort=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-
-  for(let i=headerIdx+1;i<rows.length;i++){
-    const r=rows[i];
-    if(!r[iPts])continue;
-    const pts=parseArgNum(r[iPts]);
-    if(!pts||pts<=0)continue;
-
-    const nombre=(iNombre>=0?r[iNombre]:'').trim();
-    const emp=(iEmp>=0?r[iEmp]:'').trim().toUpperCase();
-    const mes=(iMes>=0?r[iMes]:'').trim();
-
-    // Acumulate per chofer
-    if(nombre){
-      const key=nombre.toUpperCase();
-      if(!choferes[key])choferes[key]={nombre,emp,pts:[],promedio:0};
-      choferes[key].pts.push(pts);
-    }
-
-    // Acumulate per mes
-    if(mes){
-      const mesLow=mes.toLowerCase();
-      const idx=mesOrder.findIndex(m=>mesLow.includes(m)||m.includes(mesLow));
-      const label=idx>=0?mesShort[idx]:mes.substring(0,3);
-      const order=idx>=0?idx:99;
-      if(!meses[label])meses[label]={mes:label,pts:[],order};
-      meses[label].pts.push(pts);
-    }
-  }
-
-  // Calculate promedios
-  const choferesArr=Object.values(choferes).map(c=>{
-    c.promedio=parseFloat((c.pts.reduce((s,p)=>s+p,0)/c.pts.length).toFixed(1));
-    return c;
-  }).sort((a,b)=>b.promedio-a.promedio);
-
-  const mesesArr=Object.values(meses).map(m=>{
-    m.promedio=parseFloat((m.pts.reduce((s,p)=>s+p,0)/m.pts.length).toFixed(1));
-    return m;
-  }).sort((a,b)=>a.order-b.order);
-
-  const promedioGral=mesesArr.length
-    ? parseFloat((mesesArr.reduce((s,m)=>s+m.promedio,0)/mesesArr.length).toFixed(1))
-    : (choferesArr.length ? parseFloat((choferesArr.reduce((s,c)=>s+c.promedio,0)/choferesArr.length).toFixed(1)):0);
-
-  const mejorMes=mesesArr.length ? mesesArr.reduce((a,b)=>a.promedio>b.promedio?a:b) : null;
-
-  return {choferesArr, mesesArr, promedioGral, mejorMes, top10:choferesArr.slice(0,10)};
-}
-
-function renderLiga(data){
-  if(!data)return;
-  const obj=70;
-  setEl('liga-prom', data.promedioGral);
-  setEl('liga-gap', (data.promedioGral-obj).toFixed(1));
-  if(data.mejorMes) setEl('liga-mejor', data.mejorMes.mes);
-
-  // Update resumen hero
-  const heroNum=document.querySelector('.hero-liga .hero-num');
-  if(heroNum) heroNum.textContent=data.promedioGral;
-  heroNum.style.color=data.promedioGral>=obj?'var(--verde)':'var(--amarillo)';
-
-  // Top 10
-  const medals=['🥇','🥈','🥉'];
-  document.getElementById('liga-top').innerHTML=data.top10.map((c,i)=>`
-    <div class="row-list-item">
-      <div class="medal">${i<3?medals[i]:i+1}</div>
-      <div style="flex:1;margin:0 10px">
-        <div style="font-size:13px">${c.nombre}</div>
-        <div style="font-size:10px;color:var(--sec)">${c.emp} · ${c.pts.length} mes${c.pts.length!==1?'es':''}</div>
-      </div>
-      <div style="font-size:18px;font-weight:800;color:${c.promedio>=obj?'var(--verde)':'var(--txt)'};font-family:monospace">${c.promedio}</div>
-    </div>`).join('');
-
-  // Mes chart (simple SVG bars)
-  if(data.mesesArr.length){
-    const max=Math.max(100,...data.mesesArr.map(m=>m.promedio));
-    const W=320,H=140,padL=35,padR=10,padT=10,padB=30;
-    const cW=W-padL-padR,cH=H-padT-padB;
-    const n=data.mesesArr.length;
-    const barW=Math.min(38,Math.floor(cW/n)-4);
-    const gap=(cW-(barW*n))/(n+1);
-    const objY=padT+cH-(obj/max)*cH;
-
-    let svg=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">`;
-    svg+=`<line x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}" stroke="#2A2A2A" stroke-width="1"/>`;
-    svg+=`<line x1="${padL}" y1="${padT+cH/2}" x2="${W-padR}" y2="${padT+cH/2}" stroke="#2A2A2A" stroke-width="1"/>`;
-    svg+=`<line x1="${padL}" y1="${padT+cH}" x2="${W-padR}" y2="${padT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
-    svg+=`<line x1="${padL}" y1="${objY}" x2="${W-padR}" y2="${objY}" stroke="#22C55E" stroke-width="1" stroke-dasharray="4,2"/>`;
-    svg+=`<text x="${W-padR}" y="${objY-2}" fill="#22C55E" font-size="7" text-anchor="end">70 pts</text>`;
-    svg+=`<text x="${padL-4}" y="${padT+4}" fill="#888" font-size="8" text-anchor="end">${max}</text>`;
-    svg+=`<text x="${padL-4}" y="${padT+cH/2+4}" fill="#888" font-size="8" text-anchor="end">${Math.round(max/2)}</text>`;
-
-    data.mesesArr.forEach((m,i)=>{
-      const cx=padL+gap+(barW/2)+i*(barW+gap);
-      const barH=(m.promedio/max)*cH;
-      const y=padT+cH-barH;
-      const color=m.promedio>=obj?'#22C55E':'#CC0000';
-      svg+=`<rect x="${cx-barW/2}" y="${y}" width="${barW}" height="${barH}" fill="${color}" rx="3"/>`;
-      svg+=`<text x="${cx}" y="${y-3}" fill="#888" font-size="7" text-anchor="middle">${m.promedio}</text>`;
-      svg+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${m.mes}</text>`;
-    });
-    svg+='</svg>';
-    document.getElementById('liga-mes-chart').innerHTML=svg;
-  }
-}
-
-function parseNomina(rows){
-  // Flexible parser: looks for Mes, Empresa, and numeric columns
-  if(!rows||rows.length<2)return null;
-
-  // Find header row
-  let headerIdx=0;
-  for(let i=0;i<Math.min(5,rows.length);i++){
-    const r=rows[i].map(c=>c.toLowerCase().trim());
-    if(r.some(c=>c.includes('mes')||c.includes('empresa')||c.includes('emp'))){
-      headerIdx=i; break;
-    }
-  }
-  const headers=rows[headerIdx].map(c=>c.toLowerCase().trim());
-  const iMes=headers.findIndex(h=>h.includes('mes'));
-  const iEmp=headers.findIndex(h=>h.includes('empresa')||h==='emp');
-  const iTotal=headers.findIndex(h=>h.includes('total'));
-  const iCh=headers.findIndex(h=>h.includes('chofer'));
-
-  if(iMes<0&&iEmp<0)return null;
-
-  const empresaData={};
-  const mesData={};
-  let totalActivos=0;
-
-  for(let i=headerIdx+1;i<rows.length;i++){
-    const r=rows[i];
-    if(!r[0])continue;
-    const mes=(iMes>=0?r[iMes]:'').trim();
-    const emp=(iEmp>=0?r[iEmp]:'').trim().toUpperCase();
-    const total=iTotal>=0?parseArgNum(r[iTotal]):0;
-    const choferes=iCh>=0?parseArgNum(r[iCh]):0;
-
-    if(!emp&&!mes)continue;
-
-    // Track by empresa (use last mes = most recent)
-    if(emp){
-      if(!empresaData[emp])empresaData[emp]={emp,total:0,choferes:0,otros:0};
-      if(total>0){
-        empresaData[emp].total=total;
-        empresaData[emp].choferes=choferes||0;
-        empresaData[emp].otros=total-(choferes||0);
-      }
-    }
-    // Track by mes for trend
-    if(mes&&total>0){
-      if(!mesData[mes])mesData[mes]={mes,total:0};
-      mesData[mes].total+=total;
-    }
-  }
-
-  const empArr=Object.values(empresaData).filter(e=>e.total>0);
-  totalActivos=empArr.reduce((s,e)=>s+e.total,0);
-  const totalChoferes=empArr.reduce((s,e)=>s+e.choferes,0);
-
-  return {
-    empresas: empArr.sort((a,b)=>b.total-a.total),
-    totalActivos,
-    totalChoferes,
-    totalOtros: totalActivos-totalChoferes,
-    meses: Object.values(mesData),
-  };
-}
-
-function renderNomina(data){
-  if(!data||!data.empresas.length)return;
-
-  // Update KPIs
-  const kpis=document.querySelectorAll('#tab-nomina .kpi .kpi-val');
-  if(kpis[0])kpis[0].textContent=data.totalActivos;
-  if(kpis[1]){kpis[1].textContent=data.totalChoferes; kpis[1].closest('.kpi').querySelector('.kpi-sub').textContent=(data.totalChoferes/data.totalActivos*100).toFixed(1)+'%';}
-  if(kpis[2]){kpis[2].textContent=data.totalOtros; kpis[2].closest('.kpi').querySelector('.kpi-sub').textContent=(data.totalOtros/data.totalActivos*100).toFixed(1)+'%';}
-
-  // Update resumen KPI
-  setEl('r-activos', data.totalActivos);
-
-  // Render empresas
-  document.getElementById('nomina-empresas').innerHTML=data.empresas.map(e=>`
-    <div class="card card-sm" style="margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span style="font-weight:800;color:var(--rojo);font-size:16px">${e.emp}</span>
-        <span style="font-weight:800;font-size:22px;font-family:monospace">${e.total}</span>
-      </div>
-      <div class="emp-bars">
-        <div class="emp-bar" style="flex:${e.choferes||1};background:var(--rojo);color:#fff">🚛 ${e.choferes||'—'}</div>
-        <div class="emp-bar" style="flex:${e.otros||1};background:#2A2A2A;color:var(--sec)">🏢 ${e.otros||'—'}</div>
-      </div>
-    </div>`).join('');
-}
-
+// ── Render estáticos ──────────────────────────
 function renderStatic(){
   // Facturación
-  const FACT=[
-    {m:'Ene',total:2259.3,perd:123.3,pct:5.46},{m:'Feb',total:1974.9,perd:89.5,pct:4.53},
-    {m:'Mar',total:2502.6,perd:131.6,pct:5.26},{m:'Abr',total:3256.4,perd:184.8,pct:5.68},
-    {m:'May',total:3505.0,perd:213.9,pct:6.10},
-  ];
-  const maxP=Math.max(...FACT.map(f=>f.perd));
-  document.getElementById('fact-list').innerHTML=FACT.map(f=>`
-    <div class="card card-sm" style="margin-bottom:8px">
+  const mp=Math.max(...FACT.map(f=>f.p));
+  $('fact-list').innerHTML=FACT.map(f=>`
+    <div class="card csm" style="margin-bottom:8px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
         <span style="font-weight:700;font-size:14px">${f.m}</span>
-        <div><span style="font-size:18px;font-weight:800;color:var(--rojo);font-family:monospace">$${f.perd.toLocaleString('es-AR',{minimumFractionDigits:1})}M</span>
-        <span style="font-size:11px;color:var(--sec);margin-left:6px">(${f.pct}%)</span></div>
+        <div><span style="font-size:18px;font-weight:800;color:var(--rojo);font-family:monospace">${fM(f.p)}</span><span style="font-size:11px;color:var(--sec);margin-left:6px">(${f.pct}%)</span></div>
       </div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(f.perd/maxP*100).toFixed(0)}%;background:${f.pct>5.5?'var(--rojo)':'var(--amarillo)'}"></div></div>
-      <div style="font-size:10px;color:var(--sec);margin-top:5px">Facturado: $${f.total.toLocaleString('es-AR',{minimumFractionDigits:1})}M</div>
+      <div class="bt"><div class="bf" style="width:${(f.p/mp*100).toFixed(0)}%;background:${f.pct>5.5?'var(--rojo)':'var(--amarillo)'}"></div></div>
+      <div style="font-size:10px;color:var(--sec);margin-top:5px">Facturado: ${fM(f.t)}</div>
     </div>`).join('');
-
-  // Nomina
-  const NOM=[
-    {n:'SA',total:56,ch:35,otros:21},{n:'SRL',total:55,ch:30,otros:25},
-    {n:'EXP',total:53,ch:31,otros:22},{n:'TMD',total:42,ch:33,otros:9},
-  ];
-  document.getElementById('nomina-empresas').innerHTML=NOM.map(e=>`
-    <div class="card card-sm" style="margin-bottom:8px">
+  // Nomina estático
+  $('nom-list').innerHTML=NOM_ST.map(e=>`
+    <div class="card csm" style="margin-bottom:8px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <span style="font-weight:800;color:var(--rojo);font-size:16px">${e.n}</span>
-        <span style="font-weight:800;font-size:22px;font-family:monospace">${e.total}</span>
+        <span style="font-weight:800;font-size:22px;font-family:monospace">${e.t}</span>
       </div>
-      <div class="emp-bars">
-        <div class="emp-bar" style="flex:${e.ch};background:var(--rojo);color:#fff">🚛 ${e.ch}</div>
-        <div class="emp-bar" style="flex:${e.otros};background:#2A2A2A;color:var(--sec)">🏢 ${e.otros}</div>
+      <div class="eb">
+        <div class="ebar" style="flex:${e.c};background:var(--rojo);color:#fff">🚛 ${e.c}</div>
+        <div class="ebar" style="flex:${e.o};background:#2A2A2A;color:var(--sec)">🏢 ${e.o}</div>
       </div>
     </div>`).join('');
-
-  // Liga top
-  const medals=['🥇','🥈','🥉'];
-  const TOP=[
-    {p:1,n:'Gonzalez Sergio A.',e:'SA',pts:92.0},{p:2,n:'Peralta Hernan F.',e:'SA',pts:90.0},
-    {p:3,n:'Espinola Esteban N.',e:'SRL',pts:87.6},{p:4,n:'Audisio Juan M.',e:'SA',pts:82.4},
-    {p:5,n:'Avila Criado Nelson D.',e:'TMD',pts:82.0},{p:6,n:'Molina Lucas T.',e:'TMD',pts:81.6},
-    {p:7,n:'Acevedo Juan J.',e:'SRL',pts:79.6},{p:8,n:'Vaschkor Fernando M.',e:'SA',pts:79.2},
-    {p:9,n:'Farias Jonatan D.',e:'TMD',pts:79.2},{p:10,n:'Ludueña Walter R.',e:'SRL',pts:78.0},
-  ];
-  document.getElementById('liga-top').innerHTML=TOP.map((t,i)=>`
-    <div class="row-list-item">
-      <div class="medal">${i<3?medals[i]:t.p}</div>
+  // Liga estático
+  const md=['🥇','🥈','🥉'];
+  $('liga-top').innerHTML=LIGA_ST.map((t,i)=>`
+    <div class="rli">
+      <div class="med">${i<3?md[i]:i+1}</div>
       <div style="flex:1;margin:0 10px"><div style="font-size:13px">${t.n}</div><div style="font-size:10px;color:var(--sec)">${t.e}</div></div>
-      <div style="font-size:18px;font-weight:800;color:${t.pts>=70?'var(--verde)':'var(--txt)'};font-family:monospace">${t.pts}</div>
+      <div style="font-size:18px;font-weight:800;color:${t.p>=70?'var(--verde)':'var(--txt)'};font-family:monospace">${t.p}</div>
     </div>`).join('');
-
+  $('liga-chart').innerHTML='<div style="font-size:12px;color:var(--sec);text-align:center;padding:10px">Conectando con Google Sheets...</div>';
   // Rotación
-  const ROT=[
-    {m:'Ene',ini:205,ing:3,baj:2,fin:206},{m:'Feb',ini:206,ing:1,baj:4,fin:203},
-    {m:'Mar',ini:204,ing:0,baj:1,fin:203},{m:'Abr',ini:204,ing:0,baj:0,fin:204},
-    {m:'May',ini:204,ing:0,baj:2,fin:202},{m:'Jun',ini:209,ing:2,baj:1,fin:210},
-  ];
-  document.getElementById('rot-tabla').innerHTML=
-    `<div class="det-grid det-head"><span>Mes</span><span style="text-align:center">Ini</span><span style="text-align:center;color:var(--verde)">+Ing</span><span style="text-align:center;color:var(--rojo)">-Baj</span><span style="text-align:right">Fin</span></div>`+
-    ROT.map(r=>`<div class="det-grid"><span style="font-weight:600">${r.m}</span><span style="text-align:center;color:var(--sec)">${r.ini}</span><span style="text-align:center;color:var(--verde)">+${r.ing}</span><span style="text-align:center;color:var(--rojo)">-${r.baj}</span><span style="text-align:right;font-weight:700">${r.fin}</span></div>`).join('');
+  $('rot-tabla').innerHTML=
+    `<div class="dg dh"><span>Mes</span><span style="text-align:center">Ini</span><span style="text-align:center;color:var(--verde)">+Ing</span><span style="text-align:center;color:var(--rojo)">-Baj</span><span style="text-align:right">Fin</span></div>`+
+    ROT.map(r=>`<div class="dg"><span style="font-weight:600">${r.m}</span><span style="text-align:center;color:var(--sec)">${r.i}</span><span style="text-align:center;color:var(--verde)">+${r.ing}</span><span style="text-align:center;color:var(--rojo)">-${r.b}</span><span style="text-align:right;font-weight:700">${r.f}</span></div>`).join('');
+  // F931 estático
+  renderF931(F931_ST);
 }
 
-// ══════════════════════════════════════════════
-// MAIN LOAD
-// ══════════════════════════════════════════════
-async function loadAllData(){
-  document.getElementById('loadingOverlay').classList.remove('hidden');
-  let liveCount=0;
-
-  // Always render static first
-  renderStatic();
-
-  // Nómina
-  try{
-    setStep('Cargando nómina...');
-    const rowsNom=await fetchCSV(SHEETS.nomina);
-    const dataNom=parseNomina(rowsNom);
-    if(dataNom){
-      renderNomina(dataNom);
-      liveCount++;
-      const tag=document.getElementById('nom-source-tag');
-      if(tag){tag.textContent='● Google Sheets — actualizado';}
-    }
-  }catch(e){
-    console.warn('Nomina fallback:',e);
-    const tag=document.getElementById('nom-source-tag');
-    if(tag){tag.textContent='⚠ Sin conexión — datos estáticos';tag.className='source-tag source-static';}
-  }
-
-  // H&S
-  try{
-    setStep('Cargando H&S...');
-    const rowsHS=await fetchCSV(SHEETS.hs);
-    const dataHS=parseHS(rowsHS);
-    if(dataHS){
-      renderHS(dataHS);
-      liveCount++;
-      const tag=document.getElementById('hs-source-tag');
-      if(tag){tag.textContent='● Google Sheets — actualizado';}
-    }
-  }catch(e){
-    console.warn('HS fallback:',e);
-    const tag=document.getElementById('hs-source-tag');
-    if(tag){tag.textContent='⚠ Sin conexión — datos estáticos';tag.className='source-tag source-static';}
-  }
-
-  // Liga
-  try{
-    setStep('Cargando Liga de Choferes...');
-    const rowsLiga=await fetchCSV(SHEETS.liga);
-    const dataLiga=parseLiga(rowsLiga);
-    if(dataLiga){
-      renderLiga(dataLiga);
-      liveCount++;
-      const tag=document.getElementById('liga-source-tag');
-      if(tag){tag.textContent='● Google Sheets — actualizado';}
-    }
-  }catch(e){
-    console.warn('Liga fallback:',e);
-    const tag=document.getElementById('liga-source-tag');
-    if(tag){tag.textContent='⚠ Sin conexión — datos estáticos';tag.className='source-tag source-static';}
-  }
-
-  // F931
-  try{
-    setStep('Cargando costos F931...');
-    const rows=await fetchCSV(SHEETS.f931);
-    const data=parseF931(rows);
-    renderF931(data);
-    liveCount++;
-    document.getElementById('f931-source-tag').textContent='● Google Sheets — actualizado';
-  }catch(e){
-    console.warn('F931 fallback:',e);
-    renderF931(STATIC.f931);
-    document.getElementById('f931-source-tag').textContent='⚠ Sin conexión — datos del último período';
-    document.getElementById('f931-source-tag').className='source-tag source-static';
-  }
-
-  // Vacaciones
-  try{
-    setStep('Cargando vacaciones...');
-    const rows=await fetchCSV(SHEETS.vacaciones);
-    const data=parseVacaciones(rows);
-    renderVacaciones(data);
-    liveCount++;
-  }catch(e){
-    console.warn('Vacaciones fallback:',e);
-    renderVacaciones(STATIC.vacaciones);
-  }
-
-  // Ausentismo
-  try{
-    setStep('Cargando ausentismo...');
-    const rows=await fetchCSV(SHEETS.ausentismo);
-    const data=parseAusentismo(rows);
-    renderAusentismo(data);
-    liveCount++;
-    document.getElementById('aus-source-tag').textContent='● Google Sheets — actualizado';
-  }catch(e){
-    console.warn('Ausentismo fallback:',e);
-    renderAusentismo(STATIC.ausentismo);
-    document.getElementById('aus-source-tag').textContent='⚠ Sin conexión — datos del último período';
-    document.getElementById('aus-source-tag').className='source-tag source-static';
-  }
-
-  // Update status
-  const badge=document.getElementById('statusBadge');
-  if(liveCount===3){badge.textContent='● EN VIVO';badge.className='badge badge-live';}
-  else if(liveCount>0){badge.textContent='◐ PARCIAL';badge.className='badge badge-cache';}
-  else{badge.textContent='○ OFFLINE';badge.style.background='#444';}
-
-  setEl('periodoLabel','2026 · '+new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}));
-  document.getElementById('loadingOverlay').classList.add('hidden');
+// ── Render F931 ───────────────────────────────
+function renderF931(d){
+  se('c-tot',fM(d.tot));se('c-rem',fM(d.rem));se('c-con',fM(d.con));se('c-afip',fM(d.afip));
+  const pc=((d.con/d.tot)*100).toFixed(1);
+  se('c-pct',pc+'%');
+  // Costo diario: total / (meses*emp_prom*dias_hab)
+  const meses=d.emp?6:6;
+  const cdia=Math.round(d.tot*1e6/(206*22*meses));
+  se('c-dia','$'+Math.round(cdia/1000)+'K');
+  se('r-cdia','$'+Math.round(cdia/1000)+'K');
+  // Costo ausentismo
+  const sinART=790;const artD=615;
+  const csa=(sinART*cdia/1e6).toFixed(1);
+  const cart=(artD*cdia/1e6).toFixed(1);
+  const ctot=(+csa + +cart).toFixed(1);
+  const pctCaus=(ctot/d.tot*100).toFixed(2);
+  se('c-caus2','$'+ctot+'M');se('c-cpct2',pctCaus+'%');
+  se('c-caus2','$'+ctot+'M');
+  se('r-caus','$'+ctot+'M');se('r-csinart','$'+csa+'M');se('r-cart','$'+cart+'M');
+  se('r-cpct',pctCaus+'% del costo laboral');
+  se('c-csa','$'+csa+'M');se('c-cart','$'+cart+'M');se('c-ctot','$'+ctot+'M');
+  se('c-l1','790 días × $'+Math.round(cdia/1000)+'K/día');
+  se('c-l2','615 días × $'+Math.round(cdia/1000)+'K/día');
+  // Empresas
+  const mx=Math.max(...d.emp.map(e=>e.t));
+  $('cos-list').innerHTML=d.emp.map(e=>`
+    <div class="card csm" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-weight:800;color:var(--verde);font-size:15px">${e.e}</span>
+        <div><span style="font-size:18px;font-weight:800;font-family:monospace">${fM(e.t)}</span><span style="font-size:10px;color:var(--sec);margin-left:6px">${(e.t/d.tot*100).toFixed(1)}%</span></div>
+      </div>
+      <div class="bt"><div class="bf" style="width:${(e.t/mx*100).toFixed(0)}%;background:var(--verde)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--sec);margin-top:4px">
+        <span>Rem: ${fM(e.r)}</span><span>Contrib: ${fM(e.c)}</span><span>AFIP: ${fM(e.a)}</span>
+      </div>
+    </div>`).join('');
 }
 
-// ══════════════════════════════════════════════
-// TAB SWITCHER
-// ══════════════════════════════════════════════
-function showTab(id,btn){
+// ── Parser F931 ───────────────────────────────
+function pF931(rows){
+  const emp={SA:{r:0,c:0,a:0},SRL:{r:0,c:0,a:0},EXP:{r:0,c:0,a:0},TMD:{r:0,c:0,a:0}};
+  for(let i=1;i<rows.length;i++){
+    const r=rows[i];if(!r[0]||!r[1])continue;
+    const e=r[1].trim();const rem=pan(r[3])/1e6;const con=pan(r[5])/1e6;const af=pan(r[6])/1e6;
+    if(emp[e]){emp[e].r+=rem;emp[e].c+=con;emp[e].a+=af;}
+  }
+  const earr=Object.entries(emp).map(([e,v])=>({e,r:v.r,c:v.c,t:v.r+v.c,a:v.a})).sort((a,b)=>b.t-a.t);
+  return{tot:earr.reduce((s,e)=>s+e.t,0),rem:earr.reduce((s,e)=>s+e.r,0),con:earr.reduce((s,e)=>s+e.c,0),afip:earr.reduce((s,e)=>s+e.a,0),emp:earr};
+}
+
+// ── Parser Vacaciones ─────────────────────────
+function pVac(rows){
+  const res={tot:0,tom:0,pen:0,emp:0,by:{}};
+  const ok=['SA','SRL','EXP','TMD'];
+  for(let i=1;i<rows.length;i++){
+    const r=rows[i];const e=r[0]?.trim();
+    if(!e||!ok.includes(e))continue;
+    const v=pan(r[5]||0),l=pan(r[6]||0),p=pan(r[7]||0);
+    if(v===0&&p===0)continue;
+    res.tot+=v;res.tom+=l;res.pen+=p;res.emp++;
+    if(!res.by[e])res.by[e]={e,t:0,m:0,p:0,n:0};
+    res.by[e].t+=v;res.by[e].m+=l;res.by[e].p+=p;res.by[e].n++;
+  }
+  return res;
+}
+
+function renderVac(d){
+  se('v-tot',fN(d.tot));se('v-tom',fN(d.tom));se('v-pen',fN(d.pen));se('v-emp',d.emp);
+  const pp=(d.pen/d.tot*100).toFixed(1);
+  se('v-alert','El '+pp+'% de los días ('+fN(d.pen)+') están pendientes de tomar.');
+  const list=Object.values(d.by).sort((a,b)=>b.p-a.p);
+  const mx=Math.max(...list.map(e=>e.p));
+  $('vac-list').innerHTML=list.map(e=>`
+    <div class="card csm" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div><span style="font-weight:800;color:var(--rojo);font-size:15px">${e.e}</span><span style="font-size:11px;color:var(--sec);margin-left:8px">${e.n} emp.</span></div>
+        <div><span style="font-size:17px;font-weight:800;color:var(--amarillo);font-family:monospace">${fN(e.p)}</span><span style="font-size:10px;color:var(--sec);margin-left:4px">pend.</span></div>
+      </div>
+      <div class="bt" style="height:8px"><div class="bf" style="width:${(e.m/e.t*100).toFixed(0)}%;background:var(--verde)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--sec);margin-top:4px">
+        <span>✅ Tomados: ${Math.round(e.m)} días</span><span>Total: ${fN(e.t)} días</span>
+      </div>
+    </div>`).join('');
+}
+
+// ── Parser Nómina ─────────────────────────────
+function pNom(rows){
+  let hi=0;
+  for(let i=0;i<Math.min(5,rows.length);i++){
+    const r=rows[i].map(c=>c.toLowerCase().trim());
+    if(r.some(c=>c.includes('mes')||c.includes('empresa')||c.includes('emp'))){hi=i;break;}
+  }
+  const h=rows[hi].map(c=>c.toLowerCase().trim());
+  const im=h.findIndex(x=>x.includes('mes'));
+  const ie=h.findIndex(x=>x.includes('empresa')||x==='emp');
+  const it=h.findIndex(x=>x.includes('total'));
+  const ic=h.findIndex(x=>x.includes('chofer'));
+  if(im<0&&ie<0)return null;
+  const ed={};
+  for(let i=hi+1;i<rows.length;i++){
+    const r=rows[i];if(!r[0])continue;
+    const e=(ie>=0?r[ie]:'').trim().toUpperCase();
+    const t=it>=0?pan(r[it]):0;
+    const c=ic>=0?pan(r[ic]):0;
+    if(e&&t>0){if(!ed[e])ed[e]={e,t:0,c:0,o:0};ed[e].t=t;ed[e].c=c;ed[e].o=t-c;}
+  }
+  const arr=Object.values(ed).filter(e=>e.t>0).sort((a,b)=>b.t-a.t);
+  const tot=arr.reduce((s,e)=>s+e.t,0);
+  const ch=arr.reduce((s,e)=>s+e.c,0);
+  return{arr,tot,ch,ot:tot-ch};
+}
+
+function renderNom(d){
+  if(!d)return;
+  se('n-tot',d.tot);se('n-ch',d.ch);se('n-ot',d.ot);
+  se('n-chp',(d.ch/d.tot*100).toFixed(1)+'%');
+  se('n-otp',(d.ot/d.tot*100).toFixed(1)+'%');
+  se('r-act',d.tot);
+  $('nom-list').innerHTML=d.arr.map(e=>`
+    <div class="card csm" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-weight:800;color:var(--rojo);font-size:16px">${e.e}</span>
+        <span style="font-weight:800;font-size:22px;font-family:monospace">${e.t}</span>
+      </div>
+      <div class="eb">
+        <div class="ebar" style="flex:${e.c||1};background:var(--rojo);color:#fff">🚛 ${e.c||'—'}</div>
+        <div class="ebar" style="flex:${e.o||1};background:#2A2A2A;color:var(--sec)">🏢 ${e.o||'—'}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── Parser Liga ───────────────────────────────
+function pLiga(rows){
+  let hi=0;
+  for(let i=0;i<Math.min(5,rows.length);i++){
+    const r=rows[i].map(c=>c.toLowerCase().trim());
+    if(r.some(c=>c.includes('nombre')||c.includes('chofer')||c.includes('punt')||c.includes('mes'))){hi=i;break;}
+  }
+  const h=rows[hi].map(c=>c.toLowerCase().trim());
+  const iN=h.findIndex(x=>x.includes('nombre')||x.includes('chofer')||x.includes('apellido'));
+  const iE=h.findIndex(x=>x.includes('empresa')||x==='emp');
+  const iP=h.findIndex(x=>x.includes('punt')||x.includes('prom')||x.includes('nota')||x.includes('score'));
+  const iM=h.findIndex(x=>x.includes('mes'));
+  if(iP<0)return null;
+  const ch={};const mes={};
+  const MO=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const MS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  for(let i=hi+1;i<rows.length;i++){
+    const r=rows[i];if(!r[iP])continue;
+    const p=pan(r[iP]);if(!p||p<=0)continue;
+    const n=(iN>=0?r[iN]:'').trim();
+    const e=(iE>=0?r[iE]:'').trim().toUpperCase();
+    const m=(iM>=0?r[iM]:'').trim();
+    if(n){const k=n.toUpperCase();if(!ch[k])ch[k]={n,e,ps:[]};ch[k].ps.push(p);}
+    if(m){
+      const ml=m.toLowerCase();
+      const idx=MO.findIndex(x=>ml.includes(x)||x.includes(ml));
+      const lb=idx>=0?MS[idx]:m.substring(0,3);
+      const ord=idx>=0?idx:99;
+      if(!mes[lb])mes[lb]={m:lb,ps:[],ord};
+      mes[lb].ps.push(p);
+    }
+  }
+  const ca=Object.values(ch).map(c=>{c.p=parseFloat((c.ps.reduce((s,x)=>s+x,0)/c.ps.length).toFixed(1));return c;}).sort((a,b)=>b.p-a.p);
+  const ma=Object.values(mes).map(m=>{m.p=parseFloat((m.ps.reduce((s,x)=>s+x,0)/m.ps.length).toFixed(1));return m;}).sort((a,b)=>a.ord-b.ord);
+  const pg=ma.length?parseFloat((ma.reduce((s,m)=>s+m.p,0)/ma.length).toFixed(1)):ca.length?parseFloat((ca.reduce((s,c)=>s+c.p,0)/ca.length).toFixed(1)):0;
+  const mm=ma.length?ma.reduce((a,b)=>a.p>b.p?a:b):null;
+  return{ca,ma,pg,mm,top:ca.slice(0,10)};
+}
+
+function renderLiga(d){
+  if(!d)return;
+  const obj=70;
+  se('l-prom',d.pg);se('l-gap',(d.pg-obj).toFixed(1));
+  if(d.mm)se('l-mejor',d.mm.m);
+  se('r-liga',d.pg);
+  const heroN=document.querySelector('.hl .hn');
+  if(heroN){heroN.textContent=d.pg;heroN.style.color=d.pg>=obj?'var(--verde)':'var(--amarillo)';}
+  const md=['🥇','🥈','🥉'];
+  $('liga-top').innerHTML=d.top.map((c,i)=>`
+    <div class="rli">
+      <div class="med">${i<3?md[i]:i+1}</div>
+      <div style="flex:1;margin:0 10px"><div style="font-size:13px">${c.n}</div><div style="font-size:10px;color:var(--sec)">${c.e} · ${c.ps.length} mes${c.ps.length!==1?'es':''}</div></div>
+      <div style="font-size:18px;font-weight:800;color:${c.p>=obj?'var(--verde)':'var(--txt)'};font-family:monospace">${c.p}</div>
+    </div>`).join('');
+  if(d.ma.length){
+    const mx=Math.max(100,...d.ma.map(m=>m.p));
+    const W=320,H=140,pL=35,pR=10,pT=10,pB=30;
+    const cW=W-pL-pR,cH=H-pT-pB,n=d.ma.length;
+    const bW=Math.min(38,Math.floor(cW/n)-4);
+    const gap=(cW-bW*n)/(n+1);
+    const oy=pT+cH-(obj/mx)*cH;
+    let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">`;
+    s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${oy}" x2="${W-pR}" y2="${oy}" stroke="#22C55E" stroke-width="1" stroke-dasharray="4,2"/>`;
+    s+=`<text x="${W-pR}" y="${oy-2}" fill="#22C55E" font-size="7" text-anchor="end">70 pts</text>`;
+    d.ma.forEach((m,i)=>{
+      const cx=pL+gap+bW/2+i*(bW+gap);
+      const bH=(m.p/mx)*cH;const y=pT+cH-bH;
+      const col=m.p>=obj?'#22C55E':'#CC0000';
+      s+=`<rect x="${cx-bW/2}" y="${y}" width="${bW}" height="${bH}" fill="${col}" rx="3"/>`;
+      s+=`<text x="${cx}" y="${y-3}" fill="#888" font-size="7" text-anchor="middle">${m.p}</text>`;
+      s+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${m.m}</text>`;
+    });
+    s+='</svg>';
+    $('liga-chart').innerHTML=s;
+  }
+}
+
+// ── Parser H&S ────────────────────────────────
+function pHS(rows){
+  let hi=0;
+  for(let i=0;i<Math.min(5,rows.length);i++){
+    const r=rows[i].map(c=>c.toLowerCase().trim());
+    if(r.some(c=>c.includes('mes')||c.includes('accident')||c.includes('capacit'))){hi=i;break;}
+  }
+  const h=rows[hi].map(c=>c.toLowerCase().trim());
+  const iM=h.findIndex(x=>x.includes('mes'));
+  const iA=h.findIndex(x=>x.includes('accident'));
+  const iI=h.findIndex(x=>x.includes('incident'));
+  const iAt=h.findIndex(x=>x.includes('acto'));
+  const iCn=h.findIndex(x=>x.includes('condic'));
+  const iCP=h.findIndex(x=>x.includes('prog'));
+  const iCE=h.findIndex(x=>x.includes('ejec'));
+  const mes=[];let tA=0,tI=0,tAt=0,tCn=0,tCP=0,tCE=0;
+  for(let i=hi+1;i<rows.length;i++){
+    const r=rows[i];if(!r[0]&&!r[1])continue;
+    const m=(iM>=0?r[iM]:'').trim();
+    if(!m)continue;
+    const a=iA>=0?pan(r[iA]):0,ic=iI>=0?pan(r[iI]):0;
+    const at=iAt>=0?pan(r[iAt]):0,cn=iCn>=0?pan(r[iCn]):0;
+    const cp=iCP>=0?pan(r[iCP]):0,ce=iCE>=0?pan(r[iCE]):0;
+    mes.push({m,a,ic,at,cn,cp,ce});
+    tA+=a;tI+=ic;tAt+=at;tCn+=cn;tCP+=cp;tCE+=ce;
+  }
+  return{mes,tA,tI,tAt,tCn,tCP,tCE,cum:tCP>0?Math.round(tCE/tCP*100):0};
+}
+
+function renderHS(d){
+  if(!d)return;
+  se('h-acc',d.tA);se('h-inc',d.tI);se('h-act',d.tAt);se('h-cnd',d.tCn);
+  se('h-ce',d.tCE);se('h-cs','de '+d.tCP);se('h-cum',d.cum+'%');
+  const ce=$('h-cum');if(ce)ce.style.color=d.cum>=80?'var(--verde)':'var(--amarillo)';
+  if(!d.mes.length)return;
+  const mx=Math.max(...d.mes.map(m=>Math.max(m.cp,m.ce)),1);
+  const W=320,H=150,pL=35,pR=10,pT=10,pB=30;
+  const cW=W-pL-pR,cH=H-pT-pB,n=d.mes.length;
+  const gW=Math.min(52,Math.floor(cW/n)-4);
+  const bW=Math.floor(gW/2)-1;
+  const gap=(cW-gW*n)/(n+1);
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">`;
+  s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+  d.mes.forEach((m,i)=>{
+    const gx=pL+gap+i*(gW+gap);
+    const hP=(m.cp/mx)*cH,yP=pT+cH-hP;
+    const hE=(m.ce/mx)*cH,yE=pT+cH-hE;
+    s+=`<rect x="${gx}" y="${yP}" width="${bW}" height="${hP}" fill="#2A2A2A" rx="2"/>`;
+    s+=`<rect x="${gx+bW+1}" y="${yE}" width="${bW}" height="${hE}" fill="#22C55E" rx="2"/>`;
+    s+=`<text x="${gx+bW}" y="${H-2}" fill="#888" font-size="8" text-anchor="middle">${m.m.substring(0,3)}</text>`;
+  });
+  s+='</svg>';
+  $('h-chart').innerHTML=s;
+  $('h-tabla').innerHTML=
+    `<div class="dg dh" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr"><span>Mes</span><span style="text-align:center;color:var(--rojo)">Acc</span><span style="text-align:center;color:var(--amarillo)">Inc</span><span style="text-align:center">Actos</span><span style="text-align:center">Cap.P</span><span style="text-align:right;color:var(--verde)">Cap.E</span></div>`+
+    d.mes.map(m=>`<div class="dg" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr"><span style="font-weight:600">${m.m.substring(0,3)}</span><span style="text-align:center;color:${m.a>0?'var(--rojo)':'var(--sec)'}">${m.a}</span><span style="text-align:center;color:${m.ic>0?'var(--amarillo)':'var(--sec)'}">${m.ic}</span><span style="text-align:center;color:var(--sec)">${m.at}</span><span style="text-align:center;color:var(--sec)">${m.cp}</span><span style="text-align:right;color:var(--verde)">${m.ce}</span></div>`).join('');
+}
+
+// ── Tabs ──────────────────────────────────────
+function go(id,btn){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
+  $('tab-'+id).classList.add('active');
   if(btn)btn.classList.add('active');
 }
 
-// ══════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════
-loadAllData();
+// ── Init ──────────────────────────────────────
+async function init(){
+  $('lov').classList.remove('hidden');
+  let ok=0;
+  renderStatic();
+  renderAus();
+
+  // Nómina
+  try{step('Cargando nómina...');const d=pNom(await fc(U.nom));if(d){renderNom(d);ok++;se('n-src','● Google Sheets — ✓');}}
+  catch(e){console.warn('nom:',e);se('n-src','⚠ Sin conexión');$('n-src').className='src sst';}
+
+  // Liga
+  try{step('Cargando Liga...');const d=pLiga(await fc(U.liga));if(d){renderLiga(d);ok++;se('l-src','● Google Sheets — ✓');}}
+  catch(e){console.warn('liga:',e);se('l-src','⚠ Sin conexión — datos estáticos');$('l-src').className='src sst';}
+
+  // F931
+  try{step('Cargando F931...');const d=pF931(await fc(U.f931));renderF931(d);ok++;se('c-src','● Google Sheets — ✓');}
+  catch(e){console.warn('f931:',e);se('c-src','⚠ Sin conexión — datos estáticos');$('c-src').className='src sst';}
+
+  // Vacaciones
+  try{step('Cargando vacaciones...');const d=pVac(await fc(U.vac));renderVac(d);ok++;}
+  catch(e){console.warn('vac:',e);}
+
+  // H&S
+  try{step('Cargando H&S...');const d=pHS(await fc(U.hs));if(d){renderHS(d);ok++;se('h-src','● Google Sheets — ✓');}}
+  catch(e){console.warn('hs:',e);se('h-src','⚠ Sin conexión — datos estáticos');$('h-src').className='src sst';}
+
+  const b=$('sbadge');
+  if(ok>=4){b.textContent='● EN VIVO';b.className='badge blive';}
+  else if(ok>0){b.textContent='◐ PARCIAL';b.className='badge bpart';}
+  else{b.textContent='○ OFFLINE';b.style.background='#444';}
+  se('per','2026 · '+new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit'}));
+  $('lov').classList.add('hidden');
+}
+
+init();
 </script>
 </body>
 </html>
-
+Listo
