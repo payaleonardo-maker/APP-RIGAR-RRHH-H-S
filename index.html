@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0D0D0D"/>
+<title>RIGAR · Dashboard RRHH</title>
+<style>
+:root{--rojo:#CC0000;--rojo2:#FF2222;--bg:#0D0D0D;--card:#161616;--borde:#2A2A2A;--txt:#F0F0F0;--sec:#888;--verde:#22C55E;--amarillo:#F59E0B;--azul:#3B82F6;--violeta:#8B5CF6}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,'Segoe UI',sans-serif;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:30px}
+::-webkit-scrollbar{display:none}
+button{font-family:inherit}
+.header{background:var(--card);border-bottom:2px solid var(--rojo);padding:12px 16px;position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center}
+.ey{font-size:10px;color:var(--rojo);font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.header h1{font-size:18px;font-weight:800}
+.hr{text-align:right}
+.per{font-size:10px;color:var(--sec)}
+.badge{font-size:9px;font-weight:700;border-radius:4px;padding:2px 6px;display:inline-block;background:var(--verde);color:#000}
+.tabs{display:flex;overflow-x:auto;background:var(--card);border-bottom:1px solid var(--borde);scrollbar-width:none}
+.tab{flex:none;border:none;background:none;cursor:pointer;padding:9px 11px;display:flex;flex-direction:column;align-items:center;gap:2px;border-bottom:2px solid transparent;color:var(--sec);min-width:58px}
+.tab.active{border-bottom-color:var(--rojo);color:var(--rojo);font-weight:700}
+.ti{font-size:15px}.tl{font-size:9px;white-space:nowrap}
+.content{padding:12px 14px}
+.section{display:none}
+.section.active{display:block}
+.card{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:16px;margin-bottom:12px}
+.csm{padding:12px 14px}
+.kr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:12px 8px;text-align:center;flex:1;min-width:75px}
+.kv{font-size:22px;font-weight:800;font-family:monospace;line-height:1}
+.kl{font-size:10px;color:var(--sec);margin-top:3px;text-transform:uppercase;letter-spacing:1px}
+.ks{font-size:10px;color:var(--sec);margin-top:1px}
+.st{font-size:10px;font-weight:700;color:var(--rojo);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;margin-top:4px}
+.hero{border-radius:14px;padding:18px 16px;margin-bottom:12px}
+.hf{background:linear-gradient(135deg,#1a0000,#2a0000);border:1px solid #CC000040}
+.hl{background:#0a1a00;border:1px solid #22C55E40}
+.hc{background:linear-gradient(135deg,#001a00,#002a00);border:1px solid #22C55E40}
+.he{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+.hn{font-size:36px;font-weight:900;font-family:monospace;line-height:1;margin-bottom:10px}
+.hg{display:flex;gap:6px}
+.hcl{flex:1;background:#ffffff0a;border-radius:8px;padding:8px}
+.hcv{font-size:14px;font-weight:800;font-family:monospace}
+.hcl2{font-size:9px;color:var(--sec);margin-top:2px}
+.bt{background:var(--borde);border-radius:4px;height:8px;margin-bottom:4px}
+.bf{border-radius:4px;height:100%;transition:width .6s ease}
+.rli{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--borde)}
+.rli:last-child{border-bottom:none}
+.med{width:22px;text-align:center;font-size:15px}
+.dg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:4px;font-size:12px;padding:5px 0;border-bottom:1px solid var(--borde)}
+.dg:last-child{border-bottom:none}
+.dh{font-size:10px;color:var(--sec);font-weight:700;text-transform:uppercase}
+.cc{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.ba{display:inline-block;background:#3B0000;color:var(--rojo);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;margin-top:8px}
+.alw{background:#1A1200;border:1px solid #F59E0B30;border-radius:10px;padding:12px 14px;margin-top:8px}
+.ald{background:#1A0000;border:1px solid #CC000030;border-radius:10px;padding:12px 14px}
+.alt{font-size:11px;font-weight:700;margin-bottom:4px}
+.alb{font-size:12px;color:var(--sec);line-height:1.7}
+.ir{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--borde)}
+.it{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--borde)}
+.sac{font-size:10px;color:var(--amarillo);text-align:center;margin-top:4px}
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<div class="header">
+  <div><div class="ey">GRUPO RIGAR</div><h1>Dashboard RRHH</h1></div>
+  <div class="hr"><div class="per">Ene–Ago 2026</div><span class="badge">● ACTUALIZADO</span></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="go('resumen',this)"><span class="ti">⚡</span><span class="tl">Resumen</span></button>
+  <button class="tab" onclick="go('facturacion',this)"><span class="ti">💰</span><span class="tl">Facturación</span></button>
+  <button class="tab" onclick="go('nomina',this)"><span class="ti">👥</span><span class="tl">Nómina</span></button>
+  <button class="tab" onclick="go('ausentismo',this)"><span class="ti">📋</span><span class="tl">Ausentismo</span></button>
+  <button class="tab" onclick="go('art',this)"><span class="ti">🛡️</span><span class="tl">ART</span></button>
+  <button class="tab" onclick="go('liga',this)"><span class="ti">🏆</span><span class="tl">Liga</span></button>
+  <button class="tab" onclick="go('rotacion',this)"><span class="ti">🔄</span><span class="tl">Rotación</span></button>
+  <button class="tab" onclick="go('vacaciones',this)"><span class="ti">🏖️</span><span class="tl">Vacaciones</span></button>
+  <button class="tab" onclick="go('costos',this)"><span class="ti">💼</span><span class="tl">Costos</span></button>
+  <button class="tab" onclick="go('hs',this)"><span class="ti">⚙️</span><span class="tl">H&amp;S</span></button>
+</div>
+
+<div class="content">
+
+<!-- ═══ RESUMEN ════════════════════════════════ -->
+<div id="tab-resumen" class="section active">
+  <div class="hero hf">
+    <div class="he" style="color:var(--rojo)">💰 Facturación perdida — Ene–Ago 2026</div>
+    <div class="hn" style="color:var(--rojo)">$1.123,3M</div>
+    <div class="hg">
+      <div class="hcl"><div class="hcv">5.28%</div><div class="hcl2">% pérdida prom.</div></div>
+      <div class="hcl"><div class="hcv">$21.259M</div><div class="hcl2">total facturado</div></div>
+      <div class="hcl"><div class="hcv" style="color:var(--amarillo)">Ago 5.87%</div><div class="hcl2">último mes</div></div>
+    </div>
+  </div>
+  <div class="hero hl">
+    <div class="he" style="color:var(--verde)">🏆 Liga de Choferes — Ene–Jul 2026</div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <div><div class="hn" style="color:var(--amarillo)">64.60</div><div style="font-size:10px;color:var(--sec)">promedio · obj. 70 pts</div></div>
+      <div style="flex:1"><svg viewBox="0 0 230 55" style="width:100%;display:block">
+        <line x1="0" y1="10" x2="230" y2="10" stroke="#22C55E" stroke-width="1" stroke-dasharray="4,2"/>
+        <!-- Bars: 55.2,73,68.2,65,60,55.5,75.33 max=80 h=40 y=50-(v/80)*40 -->
+        <rect x="3"   y="22" width="25" height="28" fill="#CC0000" rx="2"/>
+        <rect x="35"  y="14" width="25" height="36" fill="#22C55E" rx="2"/>
+        <rect x="67"  y="16" width="25" height="34" fill="#22C55E" rx="2"/>
+        <rect x="99"  y="18" width="25" height="32" fill="#CC0000" rx="2"/>
+        <rect x="131" y="20" width="25" height="30" fill="#CC0000" rx="2"/>
+        <rect x="163" y="22" width="25" height="28" fill="#CC0000" rx="2"/>
+        <rect x="195" y="12" width="25" height="38" fill="#22C55E" rx="2"/>
+        <text x="15"  y="53" fill="#888" font-size="7" text-anchor="middle">Ene</text>
+        <text x="47"  y="53" fill="#888" font-size="7" text-anchor="middle">Feb</text>
+        <text x="79"  y="53" fill="#888" font-size="7" text-anchor="middle">Mar</text>
+        <text x="111" y="53" fill="#888" font-size="7" text-anchor="middle">Abr</text>
+        <text x="143" y="53" fill="#888" font-size="7" text-anchor="middle">May</text>
+        <text x="175" y="53" fill="#888" font-size="7" text-anchor="middle">Jun</text>
+        <text x="207" y="53" fill="#888" font-size="7" text-anchor="middle">Jul</text>
+      </svg></div>
+    </div>
+  </div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--txt)">209</div><div class="kl">Activos</div><div class="ks">Agosto</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">850</div><div class="kl">Días aus.</div><div class="ks">sin ART</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">420</div><div class="kl">Días ART</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--sec)">13</div><div class="kl">Bajas</div></div>
+  </div>
+  <div class="st">Ausentismo — días perdidos por mes</div>
+  <div class="card"><svg viewBox="0 0 320 130" style="width:100%;display:block" id="aus-svg-r"></svg></div>
+  <div class="hero hc" style="padding:14px 16px">
+    <div class="he" style="color:var(--verde)">💼 Costo del ausentismo — Ene–Ago 2026</div>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px">
+      <div style="font-size:32px;font-weight:900;color:var(--rojo);font-family:monospace">$176.1M</div>
+      <div style="font-size:12px;color:var(--sec)">3.5% del costo laboral</div>
+    </div>
+    <div class="hg">
+      <div class="hcl"><div class="hcv" style="color:var(--amarillo)">$117.8M</div><div class="hcl2">Carp+Aus</div></div>
+      <div class="hcl"><div class="hcv" style="color:var(--rojo)">$58.2M</div><div class="hcl2">ART</div></div>
+      <div class="hcl"><div class="hcv">$139K</div><div class="hcl2">costo/día/emp</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FACTURACIÓN ════════════════════════════ -->
+<div id="tab-facturacion" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">$1.123M</div><div class="kl">Total perdido</div><div class="ks">Ene–Ago</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">$21.259M</div><div class="kl">Facturado</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">5.28%</div><div class="kl">% pérdida</div></div>
+  </div>
+  <div class="st">Detalle mensual</div>
+  <div id="fact-list"></div>
+  <div class="card" style="background:#0a1500;border-color:#22C55E30">
+    <div style="font-size:11px;color:var(--verde);font-weight:700;margin-bottom:6px">💡 ¿Cómo se calcula?</div>
+    <div style="font-size:12px;color:var(--sec);line-height:1.7"><strong style="color:var(--txt)">Días perdidos × facturación diaria por chofer.</strong> Fact. prom. por día: <strong style="color:var(--txt)">$881.000</strong></div>
+  </div>
+</div>
+
+<!-- ═══ NÓMINA ══════════════════════════════════ -->
+<div id="tab-nomina" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--txt)">209</div><div class="kl">Total activos</div><div class="ks">Agosto</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">129</div><div class="kl">Choferes</div><div class="ks">61.7%</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--azul)">80</div><div class="kl">No choferes</div><div class="ks">38.3%</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">13</div><div class="kl">Bajas 2026</div></div>
+  </div>
+  <div class="st">Por empresa — Agosto 2026</div>
+  <div id="nom-list"></div>
+</div>
+
+<!-- ═══ AUSENTISMO ══════════════════════════════ -->
+<div id="tab-ausentismo" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">850</div><div class="kl">Sin ART</div><div class="ks">días</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">1.270</div><div class="kl">Total días</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">669</div><div class="kl">Carp. médica</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">420</div><div class="kl">ART días</div></div>
+  </div>
+  <div class="st">Días por mes — total y sin ART</div>
+  <div class="card"><svg viewBox="0 0 320 140" style="width:100%;display:block" id="aus-svg-m"></svg></div>
+  <div class="st">Por tipo de inasistencia</div>
+  <div class="card" id="aus-tipos"></div>
+  <div class="st">Por sector (días acumulados)</div>
+  <div class="card" id="aus-sector"></div>
+</div>
+
+<!-- ═══ ART ════════════════════════════════════ -->
+<div id="tab-art" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">420</div><div class="kl">Días ART</div><div class="ks">Ene–Ago</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">25</div><div class="kl">Registros</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo2)">5</div><div class="kl">Personas Ago</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">96</div><div class="kl">Días Ago</div></div>
+  </div>
+  <div class="st">Días ART por mes</div>
+  <div class="card"><svg viewBox="0 0 320 120" style="width:100%;display:block" id="art-svg"></svg></div>
+  <div class="alw">
+    <div class="alt" style="color:var(--amarillo)">⚠ Atención — Agosto</div>
+    <div class="alb">Agosto registró <strong style="color:var(--txt)">96 días ART</strong> con 5 personas involucradas — el mes más alto del año. Requiere seguimiento inmediato.</div>
+  </div>
+</div>
+
+<!-- ═══ LIGA ═══════════════════════════════════ -->
+<div id="tab-liga" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">64.60</div><div class="kl">Promedio</div><div class="ks">Ene–Jul</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--sec)">70</div><div class="kl">Objetivo</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">Jul</div><div class="kl">Mejor mes</div><div class="ks">75.33 pts</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">-5.4</div><div class="kl">Gap</div></div>
+  </div>
+  <div class="st">Promedio mensual vs objetivo (70 pts)</div>
+  <div class="card" id="liga-chart"></div>
+  <div class="st">Top 10 — promedio acumulado</div>
+  <div class="card" id="liga-top"></div>
+</div>
+
+<!-- ═══ ROTACIÓN ════════════════════════════════ -->
+<div id="tab-rotacion" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">13</div><div class="kl">Bajas Ene–Ago</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">10</div><div class="kl">Ingresos</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">0.79%</div><div class="kl">Tasa prom.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--txt)">207</div><div class="kl">Dot. Agosto</div></div>
+  </div>
+  <div class="st">Detalle mensual</div>
+  <div class="card" id="rot-tabla"></div>
+</div>
+
+<!-- ═══ VACACIONES ══════════════════════════════ -->
+<div id="tab-vacaciones" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--txt)">4.641</div><div class="kl">Días corresp.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">308</div><div class="kl">Tomados</div><div class="ks">6.6%</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">4.333</div><div class="kl">Pendientes</div><div class="ks">93.4%</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--sec)">205</div><div class="kl">Empleados</div></div>
+  </div>
+  <div class="st">Por empresa</div>
+  <div id="vac-list"></div>
+  <div class="alw"><div class="alt" style="color:var(--amarillo)">⚠ ATENCIÓN</div><div class="alb">El <strong style="color:var(--txt)">93.4%</strong> de los días (4.333) están pendientes de tomar. Pico de ausencias: <strong style="color:var(--txt)">Junio–Julio 2026</strong>.</div></div>
+</div>
+
+<!-- ═══ COSTOS F931 ══════════════════════════════ -->
+<div id="tab-costos" class="section">
+  <div class="hero hc">
+    <div class="he" style="color:var(--verde)">💼 Costo laboral total — Ene–Ago 2026</div>
+    <div class="hn" style="color:var(--verde)">$5.099,8M</div>
+    <div class="hg">
+      <div class="hcl"><div class="hcv">$4.035,1M</div><div class="hcl2">Remuneraciones</div></div>
+      <div class="hcl"><div class="hcv">$1.064,9M</div><div class="hcl2">Contribuciones</div></div>
+      <div class="hcl"><div class="hcv" style="color:var(--amarillo)">Jun*SAC</div><div class="hcl2">mes más alto</div></div>
+    </div>
+  </div>
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">$139K</div><div class="kl">$/día/emp.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--azul)">20.9%</div><div class="kl">% contrib.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">$176.1M</div><div class="kl">Costo aus.</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--rojo2)">3.5%</div><div class="kl">% perdido</div></div>
+  </div>
+  <div class="st">Costo mensual — rem. + contribuciones</div>
+  <div class="card" id="cos-chart"></div>
+  <div class="sac">* Junio incluye SAC (1° cuota aguinaldo)</div>
+  <div class="st">Por empresa — Ene–Ago 2026</div>
+  <div id="cos-emp"></div>
+  <div class="st">Impacto del ausentismo</div>
+  <div class="ald">
+    <div class="alt" style="color:var(--rojo)">💸 Costo económico de las ausencias</div>
+    <div class="ir">
+      <div><div style="font-size:12px;color:var(--txt)">Carpeta médica + ausencias</div><div style="font-size:11px;color:var(--sec)">850 días × $139K/día</div></div>
+      <div style="font-size:20px;font-weight:800;color:var(--amarillo);font-family:monospace">$117.8M</div>
+    </div>
+    <div class="ir">
+      <div><div style="font-size:12px;color:var(--txt)">ART / Accidentes</div><div style="font-size:11px;color:var(--sec)">420 días × $139K/día</div></div>
+      <div style="font-size:20px;font-weight:800;color:var(--rojo);font-family:monospace">$58.2M</div>
+    </div>
+    <div class="it">
+      <span style="font-weight:700;font-size:13px">TOTAL</span>
+      <span style="font-size:26px;font-weight:900;color:var(--rojo);font-family:monospace">$176.1M</span>
+    </div>
+    <div style="font-size:10px;color:var(--sec);margin-top:8px">Equivale al 3.5% del costo laboral total Ene–Ago 2026</div>
+  </div>
+</div>
+
+<!-- ═══ H&S ══════════════════════════════════════ -->
+<div id="tab-hs" class="section">
+  <div class="kr">
+    <div class="kpi"><div class="kv" style="color:var(--rojo)">12</div><div class="kl">Accidentes</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">13</div><div class="kl">Incidentes</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--verde)">378</div><div class="kl">Cap. ejec.</div><div class="ks">de 626</div></div>
+    <div class="kpi"><div class="kv" style="color:var(--amarillo)">60%</div><div class="kl">Cumplimiento</div></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:12px">
+    <div class="kpi" style="flex:1"><div class="kv" style="color:var(--rojo)">10</div><div class="kl">Actos inseguros</div></div>
+    <div class="kpi" style="flex:1"><div class="kv" style="color:var(--amarillo)">15</div><div class="kl">Cond. inseguras</div></div>
+  </div>
+  <div class="st">Capacitaciones — prog. vs ejec. (Ene–May)</div>
+  <div class="card" id="hs-chart"></div>
+  <div class="st">Detalle mensual</div>
+  <div class="card" id="hs-tabla"></div>
+  <div class="alw"><div class="alt" style="color:var(--amarillo)">⚠ Datos Junio–Agosto pendientes</div><div class="alb">Los datos de H&S de Junio, Julio y Agosto se actualizarán en la próxima revisión.</div></div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ══════════════════════════════════════════════
+// DATA — Ene–Ago 2026
+// ══════════════════════════════════════════════
+const FACT=[
+  {m:'Ene',t:2259.3,p:123.3,pct:5.46},{m:'Feb',t:1974.9,p:89.5,pct:4.53},
+  {m:'Mar',t:2502.6,p:118.1,pct:4.72},{m:'Abr',t:2825.8,p:160.4,pct:5.68},
+  {m:'May',t:3018.1,p:184.2,pct:6.10},{m:'Jun',t:2756.5,p:165.6,pct:6.01},
+  {m:'Jul',t:2900.1,p:105.0,pct:3.62},{m:'Ago',t:3021.9,p:177.2,pct:5.87},
+];
+const NOM=[
+  {n:'SA', t:56,c:35,o:21},{n:'SRL',t:56,c:30,o:26},
+  {n:'EXP',t:54,c:31,o:23},{n:'TMD',t:43,c:33,o:10},
+];
+const AUS_MES=[
+  {m:'Ene',art:37, sinart:117,tot:154},
+  {m:'Feb',art:20, sinart:146,tot:166},
+  {m:'Mar',art:41, sinart:106,tot:147},
+  {m:'Abr',art:71, sinart:72, tot:143},
+  {m:'May',art:56, sinart:63, tot:119},
+  {m:'Jun',art:51, sinart:96, tot:147},
+  {m:'Jul',art:48, sinart:116,tot:164},
+  {m:'Ago',art:96, sinart:134,tot:230},
+];
+const AUS_TIPOS=[
+  {t:'Carpeta médica',d:669},{t:'ART',d:420},{t:'Ausencia',d:123},
+  {t:'Lic. especial',d:28},{t:'Perm. sindical',d:21},{t:'Suspensión',d:9},
+];
+const AUS_SEC=[
+  {s:'Chofer',d:761},{s:'Depósito',d:246},{s:'Tráfico',d:90},
+  {s:'Taller',d:75},{s:'Administración',d:54},{s:'RRHH',d:15},
+  {s:'Comercial',d:14},{s:'Compras',d:6},{s:'Facturación',d:6},{s:'Maestranza',d:3},
+];
+const F931_MES=[
+  {m:'Ene',rem:420.7,cs:84.0,co:20.0,costo:524.6},
+  {m:'Feb',rem:430.4,cs:86.4,co:20.9,costo:537.7},
+  {m:'Mar',rem:426.5,cs:83.3,co:19.7,costo:529.5},
+  {m:'Abr',rem:468.5,cs:111.5,co:25.4,costo:605.4},
+  {m:'May',rem:475.2,cs:112.0,co:25.8,costo:613.0},
+  {m:'Jun',rem:743.2,cs:175.8,co:40.2,costo:959.1,sac:true},
+  {m:'Jul',rem:548.6,cs:110.5,co:28.3,costo:687.4},
+  {m:'Ago',rem:522.0,cs:102.4,co:25.6,costo:650.0},
+];
+const F931_EMP=[
+  {e:'SA', r:1026.8+153.1+148.7,c:281.7+35.8+35.2,t:1308.5+188.9+183.9},
+  {e:'SRL',r:990.9+149.5+139.2,c:278.1+35.5+35.5,t:1268.9+185.0+174.7},
+  {e:'TMD',r:532.6+115.4+108.9,c:135.4+29.1+27.6,t:668.0+144.5+136.5},
+  {e:'EXP',r:414.3+130.6+125.2,c:109.8+31.4+29.7,t:524.0+162.0+154.9},
+];
+const ROT=[
+  {m:'Ene',i:205,ing:3,b:2,f:206,ta:0.97},
+  {m:'Feb',i:206,ing:1,b:4,f:203,ta:1.94},
+  {m:'Mar',i:204,ing:0,b:1,f:203,ta:0.49},
+  {m:'Abr',i:204,ing:0,b:0,f:204,ta:0.00},
+  {m:'May',i:204,ing:0,b:2,f:202,ta:0.98},
+  {m:'Jun',i:209,ing:2,b:1,f:210,ta:0.48},
+  {m:'Jul',i:208,ing:2,b:0,f:210,ta:0.00},
+  {m:'Ago',i:208,ing:2,b:3,f:207,ta:1.44},
+];
+const VAC_EMP=[
+  {e:'SA', t:1687,m:112,p:1575,n:62},
+  {e:'SRL',t:1771,m:140,p:1631,n:64},
+  {e:'EXP',t:490, m:28, p:462, n:38},
+  {e:'TMD',t:665, m:28, p:637, n:39},
+];
+const LIGA_MES=[
+  {m:'Ene',p:55.2},{m:'Feb',p:73.0},{m:'Mar',p:68.2},
+  {m:'Abr',p:65.0},{m:'May',p:60.0},{m:'Jun',p:55.5},{m:'Jul',p:75.33},
+];
+const LIGA_TOP=[
+  {n:'Gonzalez Sergio A.',e:'SA',p:92.0},{n:'Peralta Hernan F.',e:'SA',p:90.0},
+  {n:'Espinola Esteban N.',e:'SRL',p:87.6},{n:'Audisio Juan M.',e:'SA',p:82.4},
+  {n:'Avila Criado Nelson D.',e:'TMD',p:82.0},{n:'Molina Lucas T.',e:'TMD',p:81.6},
+  {n:'Acevedo Juan J.',e:'SRL',p:79.6},{n:'Vaschkor Fernando M.',e:'SA',p:79.2},
+  {n:'Farias Jonatan D.',e:'TMD',p:79.2},{n:'Ludueña Walter R.',e:'SRL',p:78.0},
+];
+const HS_MES=[
+  {m:'Ene',acc:4,ic:3,at:3,cn:7,cp:121,ce:91},
+  {m:'Feb',acc:0,ic:2,at:1,cn:1,cp:125,ce:68},
+  {m:'Mar',acc:3,ic:2,at:2,cn:2,cp:126,ce:76},
+  {m:'Abr',acc:2,ic:5,at:2,cn:3,cp:127,ce:65},
+  {m:'May',acc:3,ic:1,at:2,cn:2,cp:127,ce:78},
+];
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+const $=id=>document.getElementById(id);
+function se(id,v){const e=$(id);if(e)e.textContent=v}
+function fM(n,d=1){return '$'+Number(n).toLocaleString('es-AR',{minimumFractionDigits:d,maximumFractionDigits:d})+'M'}
+function fN(n){return Number(Math.round(n)).toLocaleString('es-AR')}
+
+function drawLineChart(data, svgId, colorFn){
+  const svg=$(svgId); if(!svg||!data.length) return;
+  const max=Math.max(...data.map(d=>d.v));
+  const W=320,H=130,pL=35,pR=10,pT=10,pB=25;
+  const cW=W-pL-pR,cH=H-pT-pB,n=data.length;
+  const bW=Math.min(32,Math.floor(cW/n)-3);
+  const gap=(cW-bW*n)/(n+1);
+  const pts=data.map((d,i)=>{
+    const x=pL+gap+bW/2+i*(bW+gap);
+    const y=pT+cH-(d.v/max)*cH;
+    return {x,y,v:d.v,l:d.l,c:colorFn?colorFn(d):null};
+  });
+  let s=`<defs><linearGradient id="gr${svgId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#CC0000" stop-opacity=".4"/><stop offset="100%" stop-color="#CC0000" stop-opacity=".02"/></linearGradient></defs>`;
+  s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<line x1="${pL}" y1="${pT+cH/2}" x2="${W-pR}" y2="${pT+cH/2}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<text x="${pL-3}" y="${pT+4}" fill="#888" font-size="8" text-anchor="end">${max}</text>`;
+  s+=`<text x="${pL-3}" y="${pT+cH+4}" fill="#888" font-size="8" text-anchor="end">0</text>`;
+  const poly=pts.map(p=>`${p.x},${p.y}`).join(' ');
+  s+=`<polygon points="${poly} ${pts[n-1].x},${pT+cH} ${pts[0].x},${pT+cH}" fill="url(#gr${svgId})"/>`;
+  s+=`<polyline points="${poly}" fill="none" stroke="#CC0000" stroke-width="2"/>`;
+  pts.forEach(p=>{
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="3" fill="${p.c||'#CC0000'}"/>`;
+    s+=`<text x="${p.x}" y="${p.y-5}" fill="#888" font-size="7" text-anchor="middle">${p.v}</text>`;
+    s+=`<text x="${p.x}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${p.l}</text>`;
+  });
+  svg.innerHTML=s;
+}
+
+function drawBarChart(data, svgId, {refLine, refColor, colorFn, showVals=true}={}){
+  const svg=$(svgId); if(!svg||!data.length) return;
+  const max=Math.max(...data.map(d=>d.v), refLine||0)*1.05;
+  const W=320,H=140,pL=35,pR=10,pT=10,pB=30;
+  const cW=W-pL-pR,cH=H-pT-pB,n=data.length;
+  const bW=Math.min(35,Math.floor(cW/n)-3);
+  const gap=(cW-bW*n)/(n+1);
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">`;
+  s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+  s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+  if(refLine){
+    const ry=pT+cH-(refLine/max)*cH;
+    s+=`<line x1="${pL}" y1="${ry}" x2="${W-pR}" y2="${ry}" stroke="${refColor||'#22C55E'}" stroke-width="1" stroke-dasharray="4,2"/>`;
+    s+=`<text x="${W-pR}" y="${ry-2}" fill="${refColor||'#22C55E'}" font-size="7" text-anchor="end">${refLine}</text>`;
+  }
+  data.forEach((d,i)=>{
+    const cx=pL+gap+bW/2+i*(bW+gap);
+    const bH=(d.v/max)*cH; const y=pT+cH-bH;
+    const col=colorFn?colorFn(d):'#CC0000';
+    s+=`<rect x="${cx-bW/2}" y="${y}" width="${bW}" height="${bH}" fill="${col}" rx="3"/>`;
+    if(showVals) s+=`<text x="${cx}" y="${y-3}" fill="#888" font-size="7" text-anchor="middle">${d.v}</text>`;
+    s+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${d.l}</text>`;
+  });
+  s+='</svg>';
+  svg.outerHTML=s;
+}
+
+// ══════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════
+function renderAll(){
+  // Ausentismo chart resumen
+  drawLineChart(AUS_MES.map(m=>({l:m.m,v:m.tot})),'aus-svg-r');
+
+  // Facturación
+  const maxP=Math.max(...FACT.map(f=>f.p));
+  $('fact-list').innerHTML=FACT.map(f=>`
+    <div class="card csm" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-weight:700;font-size:14px">${f.m}</span>
+        <div><span style="font-size:18px;font-weight:800;color:var(--rojo);font-family:monospace">${fM(f.p)}</span>
+        <span style="font-size:11px;color:var(--sec);margin-left:6px">(${f.pct}%)</span></div>
+      </div>
+      <div class="bt"><div class="bf" style="width:${(f.p/maxP*100).toFixed(0)}%;background:${f.pct>5.5?'var(--rojo)':'var(--amarillo)'}"></div></div>
+      <div style="font-size:10px;color:var(--sec);margin-top:5px">Facturado: ${fM(f.t)}</div>
+    </div>`).join('');
+
+  // Nómina
+  $('nom-list').innerHTML=NOM.map(e=>`
+    <div class="card csm" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-weight:800;color:var(--rojo);font-size:16px">${e.n}</span>
+        <span style="font-weight:800;font-size:22px;font-family:monospace">${e.t}</span>
+      </div>
+      <div style="display:flex;gap:6px">
+        <div style="flex:${e.c};background:var(--rojo);border-radius:4px;padding:4px 8px;font-size:11px;color:#fff;font-weight:600">🚛 ${e.c}</div>
+        <div style="flex:${e.o};background:#2A2A2A;border-radius:4px;padding:4px 8px;font-size:11px;color:var(--sec)">🏢 ${e.o}</div>
+      </div>
+    </div>`).join('');
+
+  // Ausentismo mes chart (stacked SVG bars)
+  const ausSvg=$('aus-svg-m');
+  if(ausSvg){
+    const mx=Math.max(...AUS_MES.map(m=>m.tot));
+    const W=320,H=140,pL=35,pR=10,pT=10,pB=30;
+    const cW=W-pL-pR,cH=H-pT-pB,n=AUS_MES.length;
+    const bW=Math.min(28,Math.floor(cW/n)-3);
+    const gap=(cW-bW*n)/(n+1);
+    let s=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<text x="${pL-3}" y="${pT+4}" fill="#888" font-size="8" text-anchor="end">${mx}</text>`;
+    AUS_MES.forEach((m,i)=>{
+      const cx=pL+gap+bW/2+i*(bW+gap);
+      const hT=(m.tot/mx)*cH; const yT=pT+cH-hT;
+      const hA=(m.art/mx)*cH; const yA=pT+cH-hA;
+      const hS=(m.sinart/mx)*cH; const yS=pT+cH-hS;
+      s+=`<rect x="${cx-bW/2}" y="${yT}" width="${bW/2-1}" height="${hT}" fill="#CC0000" rx="2"/>`;
+      s+=`<rect x="${cx+1}" y="${yA}" width="${bW/2-1}" height="${hA}" fill="#F59E0B" rx="2"/>`;
+      s+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="8" text-anchor="middle">${m.m}</text>`;
+    });
+    s+=`<rect x="${pL}" y="${H-14}" width="8" height="6" fill="#CC0000" rx="1"/>`;
+    s+=`<text x="${pL+11}" y="${H-9}" fill="#888" font-size="7">Total</text>`;
+    s+=`<rect x="${pL+45}" y="${H-14}" width="8" height="6" fill="#F59E0B" rx="1"/>`;
+    s+=`<text x="${pL+56}" y="${H-9}" fill="#888" font-size="7">ART</text>`;
+    ausSvg.innerHTML=s;
+  }
+
+  // Ausentismo tipos
+  const mxT=Math.max(...AUS_TIPOS.map(t=>t.d));
+  $('aus-tipos').innerHTML=AUS_TIPOS.map(t=>`
+    <div style="margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span style="color:var(--sec)">${t.t}</span>
+        <span style="font-weight:700;color:${t.t==='ART'?'var(--rojo)':t.t.includes('arp')?'var(--amarillo)':'var(--txt)'}">${fN(t.d)} días</span>
+      </div>
+      <div class="bt"><div class="bf" style="width:${(t.d/mxT*100).toFixed(0)}%;background:${t.t==='ART'?'var(--rojo)':t.t.includes('arp')?'var(--amarillo)':'var(--azul)'}"></div></div>
+    </div>`).join('');
+
+  // Ausentismo sector
+  const mxS=Math.max(...AUS_SEC.map(s=>s.d));
+  $('aus-sector').innerHTML=AUS_SEC.map(s=>`
+    <div style="margin-bottom:9px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span style="color:var(--sec)">${s.s}</span><span style="font-weight:700">${fN(s.d)} días</span>
+      </div>
+      <div class="bt"><div class="bf" style="width:${(s.d/mxS*100).toFixed(0)}%;background:var(--rojo)"></div></div>
+    </div>`).join('');
+
+  // ART chart
+  const artSvg=$('art-svg');
+  if(artSvg){
+    const mxA=Math.max(...AUS_MES.map(m=>m.art));
+    const W=320,H=120,pL=35,pR=10,pT=10,pB=25;
+    const cW=W-pL-pR,cH=H-pT-pB,n=AUS_MES.length;
+    const bW=Math.min(28,Math.floor(cW/n)-3);
+    const gap=(cW-bW*n)/(n+1);
+    let s=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<text x="${pL-3}" y="${pT+4}" fill="#888" font-size="8" text-anchor="end">${mxA}</text>`;
+    AUS_MES.forEach((m,i)=>{
+      const cx=pL+gap+bW/2+i*(bW+gap);
+      const bH=(m.art/mxA)*cH; const y=pT+cH-bH;
+      const col=m.art>70?'#FF2222':m.art>50?'#CC0000':'#884400';
+      s+=`<rect x="${cx-bW/2}" y="${y}" width="${bW}" height="${bH}" fill="${col}" rx="3"/>`;
+      s+=`<text x="${cx}" y="${y-3}" fill="#888" font-size="7" text-anchor="middle">${m.art}</text>`;
+      s+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${m.m}</text>`;
+    });
+    artSvg.innerHTML=s;
+  }
+
+  // Liga chart
+  const ligaSvg=$('liga-chart');
+  if(ligaSvg){
+    const mx=Math.max(100,...LIGA_MES.map(m=>m.p));
+    const W=320,H=140,pL=35,pR=10,pT=10,pB=30;
+    const cW=W-pL-pR,cH=H-pT-pB,n=LIGA_MES.length;
+    const bW=Math.min(35,Math.floor(cW/n)-4);
+    const gap=(cW-bW*n)/(n+1);
+    const oy=pT+cH-(70/mx)*cH;
+    let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">`;
+    s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${oy}" x2="${W-pR}" y2="${oy}" stroke="#22C55E" stroke-width="1" stroke-dasharray="4,2"/>`;
+    s+=`<text x="${W-pR}" y="${oy-2}" fill="#22C55E" font-size="7" text-anchor="end">70 pts</text>`;
+    LIGA_MES.forEach((m,i)=>{
+      const cx=pL+gap+bW/2+i*(bW+gap);
+      const bH=(m.p/mx)*cH; const y=pT+cH-bH;
+      s+=`<rect x="${cx-bW/2}" y="${y}" width="${bW}" height="${bH}" fill="${m.p>=70?'#22C55E':'#CC0000'}" rx="3"/>`;
+      s+=`<text x="${cx}" y="${y-3}" fill="#888" font-size="7" text-anchor="middle">${m.p}</text>`;
+      s+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${m.m}</text>`;
+    });
+    s+='</svg>';
+    ligaSvg.outerHTML=s;
+  }
+
+  // Liga top
+  const md=['🥇','🥈','🥉'];
+  $('liga-top').innerHTML=LIGA_TOP.map((t,i)=>`
+    <div class="rli">
+      <div class="med">${i<3?md[i]:i+1}</div>
+      <div style="flex:1;margin:0 10px"><div style="font-size:13px">${t.n}</div><div style="font-size:10px;color:var(--sec)">${t.e}</div></div>
+      <div style="font-size:18px;font-weight:800;color:${t.p>=70?'var(--verde)':'var(--txt)'};font-family:monospace">${t.p}</div>
+    </div>`).join('');
+
+  // Rotación
+  $('rot-tabla').innerHTML=
+    `<div class="dg dh"><span>Mes</span><span style="text-align:center">Ini</span><span style="text-align:center;color:var(--verde)">+Ing</span><span style="text-align:center;color:var(--rojo)">-Baj</span><span style="text-align:right">Fin</span></div>`+
+    ROT.map(r=>`<div class="dg"><span style="font-weight:600">${r.m}</span><span style="text-align:center;color:var(--sec)">${r.i}</span><span style="text-align:center;color:var(--verde)">+${r.ing}</span><span style="text-align:center;color:var(--rojo)">-${r.b}</span><span style="text-align:right;font-weight:700">${r.f}</span></div>`).join('');
+
+  // Vacaciones
+  const mxV=Math.max(...VAC_EMP.map(e=>e.p));
+  $('vac-list').innerHTML=VAC_EMP.map(e=>`
+    <div class="card csm" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div><span style="font-weight:800;color:var(--rojo);font-size:15px">${e.e}</span><span style="font-size:11px;color:var(--sec);margin-left:8px">${e.n} emp.</span></div>
+        <div><span style="font-size:17px;font-weight:800;color:var(--amarillo);font-family:monospace">${fN(e.p)}</span><span style="font-size:10px;color:var(--sec);margin-left:4px">pend.</span></div>
+      </div>
+      <div class="bt" style="height:8px"><div class="bf" style="width:${(e.m/e.t*100).toFixed(0)}%;background:var(--verde)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--sec);margin-top:4px">
+        <span>✅ ${Math.round(e.m)} días tomados</span><span>Total: ${fN(e.t)} días</span>
+      </div>
+    </div>`).join('');
+
+  // Costos F931 chart (stacked bars)
+  const cosSvg=$('cos-chart');
+  if(cosSvg){
+    const mx=Math.max(...F931_MES.map(m=>m.costo));
+    const W=320,H=150,pL=35,pR=10,pT=10,pB=30;
+    const cW=W-pL-pR,cH=H-pT-pB,n=F931_MES.length;
+    const bW=Math.min(28,Math.floor(cW/n)-3);
+    const gap=(cW-bW*n)/(n+1);
+    let s='';
+    s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<text x="${pL-3}" y="${pT+4}" fill="#888" font-size="8" text-anchor="end">${mx.toFixed(0)}M</text>`;
+    F931_MES.forEach((m,i)=>{
+      const cx=pL+gap+bW/2+i*(bW+gap);
+      const hR=(m.rem/mx)*cH; const yR=pT+cH-hR-(m.cs+m.co)/mx*cH;
+      const hC=(m.cs+m.co)/mx*cH; const yC=pT+cH-hC;
+      s+=`<rect x="${cx-bW/2}" y="${yR}" width="${bW}" height="${hR}" fill="#22C55E"/>`;
+      s+=`<rect x="${cx-bW/2}" y="${yC}" width="${bW}" height="${hC}" fill="#3B82F6" rx="2"/>`;
+      if(m.sac) s+=`<text x="${cx}" y="${yR-2}" fill="#F59E0B" font-size="7" text-anchor="middle">*</text>`;
+      s+=`<text x="${cx}" y="${H-2}" fill="#888" font-size="9" text-anchor="middle">${m.m}</text>`;
+    });
+    cosSvg.innerHTML=s;
+  }
+
+  // Costos por empresa
+  const totCos=F931_EMP.reduce((s,e)=>s+e.t,0);
+  const mxE=Math.max(...F931_EMP.map(e=>e.t));
+  $('cos-emp').innerHTML=F931_EMP.sort((a,b)=>b.t-a.t).map(e=>`
+    <div class="card csm" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-weight:800;color:var(--verde);font-size:15px">${e.e}</span>
+        <div><span style="font-size:18px;font-weight:800;font-family:monospace">${fM(e.t)}</span>
+        <span style="font-size:10px;color:var(--sec);margin-left:6px">${(e.t/totCos*100).toFixed(1)}%</span></div>
+      </div>
+      <div class="bt"><div class="bf" style="width:${(e.t/mxE*100).toFixed(0)}%;background:var(--verde)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--sec);margin-top:4px">
+        <span>Rem: ${fM(e.r)}</span><span>Contrib: ${fM(e.c)}</span>
+      </div>
+    </div>`).join('');
+
+  // H&S chart
+  const hsSvg=$('hs-chart');
+  if(hsSvg){
+    const mxH=Math.max(...HS_MES.map(m=>Math.max(m.cp,m.ce)));
+    const W=320,H=150,pL=35,pR=10,pT=10,pB=30;
+    const cW=W-pL-pR,cH=H-pT-pB,n=HS_MES.length;
+    const gW=Math.min(48,Math.floor(cW/n)-4);
+    const bW=Math.floor(gW/2)-1;
+    const gap=(cW-gW*n)/(n+1);
+    let s='';
+    s+=`<line x1="${pL}" y1="${pT}" x2="${W-pR}" y2="${pT}" stroke="#2A2A2A" stroke-width="1"/>`;
+    s+=`<line x1="${pL}" y1="${pT+cH}" x2="${W-pR}" y2="${pT+cH}" stroke="#2A2A2A" stroke-width="1"/>`;
+    HS_MES.forEach((m,i)=>{
+      const gx=pL+gap+i*(gW+gap);
+      const hP=(m.cp/mxH)*cH,yP=pT+cH-hP;
+      const hE=(m.ce/mxH)*cH,yE=pT+cH-hE;
+      s+=`<rect x="${gx}" y="${yP}" width="${bW}" height="${hP}" fill="#2A2A2A" rx="2"/>`;
+      s+=`<rect x="${gx+bW+1}" y="${yE}" width="${bW}" height="${hE}" fill="#22C55E" rx="2"/>`;
+      s+=`<text x="${gx+bW}" y="${H-2}" fill="#888" font-size="8" text-anchor="middle">${m.m}</text>`;
+    });
+    s+=`<rect x="${pL}" y="${H-14}" width="8" height="6" fill="#2A2A2A" rx="1"/>`;
+    s+=`<text x="${pL+11}" y="${H-9}" fill="#888" font-size="7">Programadas</text>`;
+    s+=`<rect x="${pL+75}" y="${H-14}" width="8" height="6" fill="#22C55E" rx="1"/>`;
+    s+=`<text x="${pL+86}" y="${H-9}" fill="#888" font-size="7">Ejecutadas</text>`;
+    hsSvg.innerHTML=s;
+  }
+
+  // H&S tabla
+  $('hs-tabla').innerHTML=
+    `<div class="dg dh" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr">
+      <span>Mes</span><span style="text-align:center;color:var(--rojo)">Acc</span>
+      <span style="text-align:center;color:var(--amarillo)">Inc</span>
+      <span style="text-align:center">Actos</span>
+      <span style="text-align:center">Cap.P</span>
+      <span style="text-align:right;color:var(--verde)">Cap.E</span>
+    </div>`+
+    HS_MES.map(m=>`
+    <div class="dg" style="grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr">
+      <span style="font-weight:600">${m.m}</span>
+      <span style="text-align:center;color:${m.acc>0?'var(--rojo)':'var(--sec)'}">${m.acc}</span>
+      <span style="text-align:center;color:${m.ic>0?'var(--amarillo)':'var(--sec)'}">${m.ic}</span>
+      <span style="text-align:center;color:var(--sec)">${m.at}</span>
+      <span style="text-align:center;color:var(--sec)">${m.cp}</span>
+      <span style="text-align:right;color:var(--verde)">${m.ce}</span>
+    </div>`).join('');
+}
+
+function go(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  $('tab-'+id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+
+renderAll();
+</script>
+</body>
+</html>
